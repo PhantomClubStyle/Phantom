@@ -11,13 +11,13 @@
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen p-4 sm:p-8">
 
-    <!-- Pantalla de Login -->
+    <!-- Pantalla de Login con botón optimizado -->
     <div id="login-screen" class="max-w-md mx-auto mt-20 bg-phantom-900 border border-white/10 p-8 rounded-3xl shadow-2xl">
         <h2 class="text-xl font-black text-white mb-2">Panel Privado Phantom</h2>
-        <p class="text-xs text-phantom-400 mb-6">Ingresa tu contraseña de administración.</p>
-        <input type="password" id="admin-pass" placeholder="Contraseña (ej: phantom2026)" class="w-full bg-phantom-950 border border-white/20 p-3 rounded-xl text-white text-sm mb-4 focus:outline-none focus:border-white">
-        <button onclick="checkPassword()" class="w-full py-3 bg-white text-black font-bold rounded-xl text-sm shadow-lg">Entrar al Panel</button>
-        <p id="login-error" class="text-xs text-rose-400 mt-3 hidden">Contraseña incorrecta.</p>
+        <p class="text-xs text-phantom-400 mb-6">Ingresa tu contraseña de administración para gestionar la tienda.</p>
+        <input type="password" id="admin-pass" placeholder="Contraseña (ej: phantom2026)" class="w-full bg-phantom-950 border border-white/25 p-3.5 rounded-xl text-white text-sm mb-4 focus:outline-none focus:border-white">
+        <button onclick="checkPassword()" class="w-full py-3.5 bg-white text-black font-extrabold rounded-xl text-sm shadow-lg hover:bg-phantom-200 transition-all cursor-pointer">Entrar al Panel</button>
+        <p id="login-error" class="text-xs text-rose-400 mt-3 hidden">Contraseña incorrecta. Intenta nuevamente.</p>
     </div>
 
     <!-- Panel de Control (Oculto hasta autenticarse) -->
@@ -25,15 +25,14 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 bg-phantom-900 p-6 rounded-3xl border border-white/10">
             <div>
                 <h1 class="text-2xl font-black text-white">⚡ Panel de Control Phantom</h1>
-                <p class="text-xs text-phantom-400">Modifica tu tienda en tiempo real desde el celular.</p>
+                <p class="text-xs text-phantom-400">Modifica precios, stock y productos en tiempo real.</p>
             </div>
             <div class="flex gap-3">
-                <button onclick="openProductModal()" class="px-4 py-2.5 bg-white text-black font-bold rounded-xl text-xs shadow-lg">+ Nuevo Producto</button>
+                <button onclick="openProductModal()" class="px-4 py-2.5 bg-white text-black font-bold rounded-xl text-xs shadow-lg cursor-pointer">+ Nuevo Producto</button>
                 <a href="index.html" target="_blank" class="px-4 py-2.5 bg-phantom-800 border border-white/20 text-white font-bold rounded-xl text-xs flex items-center gap-2">Ver Tienda ↗</a>
             </div>
         </div>
 
-        <!-- Lista de Productos en el Panel -->
         <div class="bg-phantom-900 rounded-3xl border border-white/10 overflow-hidden p-6">
             <h3 class="text-sm font-black uppercase text-phantom-400 mb-4">Inventario Actual</h3>
             <div id="admin-product-list" class="space-y-4"></div>
@@ -43,7 +42,7 @@
     <!-- Modal para Crear / Editar Producto -->
     <div id="product-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 z-50 overflow-y-auto">
         <div class="bg-phantom-900 border border-white/20 rounded-3xl max-w-lg w-full p-6 space-y-4 my-auto">
-            <h3 id="modal-title" class="text-lg font-bold text-white">Añadir / Editar Producto</h3>
+            <h3 class="text-lg font-bold text-white">Añadir / Editar Producto</h3>
             <input type="hidden" id="prod-id">
             <div>
                 <label class="text-xs text-phantom-400 block mb-1">Nombre del producto</label>
@@ -69,12 +68,17 @@
                     <input type="number" id="prod-stock" class="w-full bg-phantom-950 border border-white/10 p-3 rounded-xl text-white text-sm">
                 </div>
                 <div>
-                    <label class="text-xs text-phantom-400 block mb-1">Etiqueta (Badge)</label>
-                    <input type="text" id="prod-badge" placeholder="Ej: Exclusiva, Oferta, Agotado" class="w-full bg-phantom-950 border border-white/10 p-3 rounded-xl text-white text-sm">
+                    <label class="text-xs text-phantom-400 block mb-1">Subfiltro</label>
+                    <select id="prod-subfilter" class="w-full bg-phantom-950 border border-white/10 p-3 rounded-xl text-white text-sm">
+                        <option value="exclusivas">Exclusivas</option>
+                        <option value="ofertas">Ofertas</option>
+                        <option value="agotados">Agotados</option>
+                        <option value="proximamente">Próximamente</option>
+                    </select>
                 </div>
             </div>
             <div>
-                <label class="text-xs text-phantom-400 block mb-1">URL del Video (mp4)</label>
+                <label class="text-xs text-phantom-400 block mb-1">URL del Video (.mp4)</label>
                 <input type="text" id="prod-video" class="w-full bg-phantom-950 border border-white/10 p-3 rounded-xl text-white text-sm">
             </div>
             <div>
@@ -82,25 +86,32 @@
                 <textarea id="prod-desc" rows="3" class="w-full bg-phantom-950 border border-white/10 p-3 rounded-xl text-white text-sm"></textarea>
             </div>
             <div class="flex gap-3 pt-2">
-                <button onclick="saveProduct()" class="flex-1 py-3 bg-white text-black font-bold rounded-xl text-sm">Guardar Cambios</button>
-                <button onclick="closeProductModal()" class="px-5 py-3 bg-phantom-800 text-white font-bold rounded-xl text-sm">Cancelar</button>
+                <button onclick="saveProduct()" class="flex-1 py-3 bg-white text-black font-bold rounded-xl text-sm cursor-pointer">Guardar Cambios</button>
+                <button onclick="closeProductModal()" class="px-5 py-3 bg-phantom-800 text-white font-bold rounded-xl text-sm cursor-pointer">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const ADMIN_PIN = "phantom2026"; // Cambia esta contraseña por la que prefieras
+        const ADMIN_PIN = "phantom2026"; // Contraseña de acceso
 
         function checkPassword() {
             const pass = document.getElementById('admin-pass').value;
-            if(pass === loginmp3rodrigo) {
+            if(pass === ADMIN_PIN) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
                 loadAdminProducts();
             } else {
-                document.getElementById('login-error').classList.remove('hidden');
+                const err = document.getElementById('login-error');
+                err.classList.remove('hidden');
+                setTimeout(() => err.classList.add('hidden'), 3000);
             }
         }
+
+        // Permitir entrar presionando Enter en el input de contraseña
+        document.getElementById('admin-pass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
 
         function getProducts() {
             return JSON.parse(localStorage.getItem('phantom_products')) || [];
@@ -131,8 +142,8 @@
                         </div>
                     </div>
                     <div class="flex gap-2 shrink-0">
-                        <button onclick="editProduct(${p.id})" class="px-3 py-1.5 bg-phantom-800 hover:bg-phantom-700 text-white text-xs font-bold rounded-lg border border-white/10">Editar</button>
-                        <button onclick="deleteProduct(${p.id})" class="px-3 py-1.5 bg-rose-500/20 text-rose-400 text-xs font-bold rounded-lg">Eliminar</button>
+                        <button onclick="openProductModal(${p.id})" class="px-3 py-1.5 bg-phantom-800 hover:bg-phantom-700 text-white text-xs font-bold rounded-lg border border-white/10 cursor-pointer">Editar</button>
+                        <button onclick="deleteProduct(${p.id})" class="px-3 py-1.5 bg-rose-500/20 text-rose-400 text-xs font-bold rounded-lg cursor-pointer">Eliminar</button>
                     </div>
                 </div>
             `).join('');
@@ -140,8 +151,10 @@
         }
 
         function openProductModal(id = null) {
-            document.getElementById('product-modal').classList.remove('hidden');
-            document.getElementById('product-modal').classList.add('flex');
+            const modal = document.getElementById('product-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
             if(id) {
                 const p = getProducts().find(prod => prod.id === id);
                 document.getElementById('prod-id').value = p.id;
@@ -149,23 +162,25 @@
                 document.getElementById('prod-category').value = p.category;
                 document.getElementById('prod-price').value = p.priceUSD;
                 document.getElementById('prod-stock').value = p.stock;
-                document.getElementById('prod-badge').value = p.badge;
+                document.getElementById('prod-subfilter').value = p.subfilter || 'exclusivas';
                 document.getElementById('prod-video').value = p.videoUrl;
                 document.getElementById('prod-desc').value = p.description;
             } else {
                 document.getElementById('prod-id').value = '';
                 document.getElementById('prod-name').value = '';
+                document.getElementById('prod-category').value = 'gorras';
                 document.getElementById('prod-price').value = '';
                 document.getElementById('prod-stock').value = '10';
-                document.getElementById('prod-badge').value = 'Exclusiva';
+                document.getElementById('prod-subfilter').value = 'exclusivas';
                 document.getElementById('prod-video').value = '';
                 document.getElementById('prod-desc').value = '';
             }
         }
 
         function closeProductModal() {
-            document.getElementById('product-modal').classList.add('hidden');
-            document.getElementById('product-modal').classList.remove('flex');
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function saveProduct() {
@@ -174,23 +189,29 @@
             const category = document.getElementById('prod-category').value;
             const priceUSD = parseFloat(document.getElementById('prod-price').value) || 0;
             const stock = parseInt(document.getElementById('prod-stock').value) || 0;
-            const badge = document.getElementById('prod-badge').value;
+            const subfilter = document.getElementById('prod-subfilter').value;
             const videoUrl = document.getElementById('prod-video').value;
             const description = document.getElementById('prod-desc').value;
 
             let prods = getProducts();
 
+            let badge = "Exclusiva";
+            let badgeColor = "bg-white/10 text-white border-white/30";
+            if (subfilter === 'ofertas') { badge = "Oferta"; badgeColor = "bg-white text-black font-extrabold"; }
+            else if (subfilter === 'agotados' || stock === 0) { badge = "Agotado"; badgeColor = "bg-phantom-800 text-phantom-400 border-white/10"; }
+            else if (subfilter === 'proximamente') { badge = "Próximamente"; badgeColor = "bg-white/10 text-white border-white/30"; }
+
             if(id) {
-                prods = prods.map(p => p.id == id ? { ...p, name, category, priceUSD, stock, badge, videoUrl, description } : p);
+                prods = prods.map(p => p.id == id ? { ...p, name, category, priceUSD, stock, subfilter, badge, badgeColor, videoUrl, description } : p);
             } else {
                 const newId = prods.length > 0 ? Math.max(...prods.map(p => p.id)) + 1 : 1;
-                prods.push({ id: newId, name, category, priceUSD, stock, badge, badgeColor: "bg-white/10 text-white border-white/30", videoUrl, description, specs: ["Edición Limitada"] });
+                prods.push({ id: newId, name, category, priceUSD, stock, subfilter, badge, badgeColor, videoUrl, description, imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Phantom", specs: ["Edición Limitada"] });
             }
 
             saveProducts(prods);
             closeProductModal();
             loadAdminProducts();
-            alert('¡Guardado con éxito! Los cambios ya se reflejan en tu tienda.');
+            alert('¡Guardado con éxito! Los cambios ya se reflejan en tu tienda principal.');
         }
 
         function deleteProduct(id) {
