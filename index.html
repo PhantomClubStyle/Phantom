@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhantomClub | Catálogo Exclusivo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0b0b0e] text-gray-100 font-['Plus_Jakarta_Sans'] antialiased selection:bg-purple-500 selection:text-white pb-24">
+
+    <!-- HEADER / NAVEGACIÓN MÓVIL PREMIUM -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0b0b0e]/80 border-b border-white/10 px-4 py-3 flex items-center justify-between">
+        <a href="#" class="text-xl font-extrabold tracking-tighter bg-gradient-to-r from-white via-gray-300 to-purple-400 bg-clip-text text-transparent">
+            PHANTOM<span class="text-purple-500">CLUB</span>
+        </a>
+        <div class="flex items-center gap-3">
+            <!-- Indicador Tasa BCV -->
+            <div id="bcv-badge" class="text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-gray-400 flex items-center gap-1">
+                <i class="fa-solid fa-rotate animate-spin text-purple-400" id="bcv-spinner"></i>
+                <span>BCV: <strong id="bcv-val" class="text-white">Cargando...</strong></span>
+            </div>
+            <!-- Botón Carrito -->
+            <button onclick="toggleCart()" class="relative p-2.5 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition active:scale-95">
+                <i class="fa-solid fa-bag-shopping text-purple-400 text-lg"></i>
+                <span id="cart-counter" class="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0b0b0e] scale-0 transition-transform">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SECCIÓN HERO -->
+    <section class="px-4 pt-6 pb-4">
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-900/40 via-zinc-900/60 to-black p-6 border border-white/15 shadow-2xl">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <span class="inline-block text-[10px] font-bold tracking-widest uppercase bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full mb-3 border border-purple-500/30">Drop Exclusivo</span>
+            <h1 class="text-2xl font-bold tracking-tight mb-2">Eleva tu estilo al siguiente nivel.</h1>
+            <p class="text-xs text-gray-400 mb-4 leading-relaxed">Gorras, Crocs y colecciones limitadas diseñadas para destacar.</p>
+            
+            <!-- BUSCADOR -->
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="search-input" oninput="filterProducts()" placeholder="Buscar gorras, crocs..." class="w-full bg-black/40 border border-white/15 rounded-2xl pl-11 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition">
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTONES DE CATEGORÍAS (CON ICONOS PERSONALIZADOS) -->
+    <section class="px-4 py-2">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+            <button onclick="setCategory('all')" class="cat-btn active flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
+                <i class="fa-solid fa-fire text-purple-400"></i> Todo
+            </button>
+            <button onclick="setCategory('gorras')" class="cat-btn flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
+                <!-- Icono personalizado de Gorra -->
+                <svg class="w-4 h-4 text-purple-400 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.63 3.34 1.68 4.59L5.5 18h13l-1.18-4.41C18.37 12.34 19 10.74 19 9c0-3.87-3.13-7-7-7zm0 2c2.76 0 5 2.24 5 5s-2.24 5-5 5-5-2.24-5-5 2.24-5 5-5zm-7 15v2h14v-2H5z"/></svg>
+                Gorras
+            </button>
+            <button onclick="setCategory('crocs')" class="cat-btn flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
+                <!-- Icono personalizado de Crocs -->
+                <svg class="w-4 h-4 text-purple-400 fill-current" viewBox="0 0 24 24"><path d="M19 13.5C19 16 16.5 19 12 19s-7-3-7-5.5C5 11 7 8 9 7h6c2 0 4 4 4 6.5zM7.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3-1a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 1a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
+                Crocs
+            </button>
+            <button onclick="setCategory('oferta')" class="cat-btn flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-emerald-400">
+                <i class="fa-solid fa-tags"></i> Ofertas
+            </button>
+            <button onclick="setCategory('exclusivo')" class="cat-btn flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-amber-400">
+                <i class="fa-solid fa-crown"></i> Exclusivos
+            </button>
+            <button onclick="setCategory('proximamente')" class="cat-btn flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-blue-400">
+                <i class="fa-solid fa-clock">Próximamente</i>
+            </button>
+        </div>
+    </section>
+
+    <!-- GRID DE PRODUCTOS -->
+    <main class="px-4 py-4">
+        <div id="products-grid" class="grid grid-cols-2 gap-3">
+            <!-- Los productos se inyectan dinámicamente con JavaScript -->
+        </div>
+    </main>
+
+    <!-- CARRITO DE COMPRAS / PANEL LATERAL MÓVIL -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart()"></div>
+    
+    <div id="cart-drawer" class="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-[#121216] border-t border-white/15 rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 flex flex-col">
+        <div class="p-4 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-purple-400"></i>
+                <h2 class="font-bold text-sm">Tu Bolsa Phantom</h2>
+            </div>
+            <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Lista de items en el carrito -->
+        <div id="cart-items" class="p-4 overflow-y-auto flex-1 space-y-3 max-h-[40vh]">
+            <!-- Se llena con JS -->
+        </div>
+
+        <!-- Resumen y Checkout -->
+        <div class="p-4 border-t border-white/10 bg-black/40 space-y-3">
+            <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-gray-400">
+                    <span>Total en Dólares:</span>
+                    <span id="cart-total-usd" class="font-bold text-white">$0.00</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Total Estimado (BCV):</span>
+                    <span id="cart-total-ves" class="font-bold text-emerald-400">Bs. 0.00</span>
+                </div>
+            </div>
+
+            <!-- Formulario breve para datos de envío -->
+            <div class="space-y-2 pt-1">
+                <input type="text" id="client-name" placeholder="Tu Nombre y Apellido" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+                <input type="text" id="client-city" placeholder="Ciudad / Estado" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+            </div>
+
+            <button onclick="checkoutWhatsApp()" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2 transition active:scale-95">
+                <i class="fa-brands fa-whatsapp text-base"></i> Enviar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+/* Ocultar barra de desplazamiento manteniendo el scroll horizontal */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Animación de selección activa en categorías */
+.cat-btn.active {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.3), rgba(147, 51, 234, 0.1));
+    border-color: rgba(147, 51, 234, 0.5);
+    color: #fff;
+}
+
+/* Animaciones suaves para tarjetas */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.product-card {
+    animation: fadeIn 0.4s ease forwards;
+}
+// CONFIGURACIÓN DE TU TIENDA Y WHATSAPP
+const WHATSAPP_NUMBER = "584121234567"; // Cambia por tu número con código de país (ej: 58412...)
+
+// BASE DE DATOS DE PRODUCTOS
+let products = [
+    {
+        id: 1,
+        name: "Gorra Phantom Snapback Black",
+        category: "gorras",
+        priceUsd: 25.00,
+        tag: "exclusivo", // 'exclusivo', 'oferta', 'normal', 'proximamente'
+        image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 2,
+        name: "Crocs Classic Platform Clog",
+        category: "crocs",
+        priceUsd: 45.00,
+        tag: "oferta",
+        oldPriceUsd: 55.00,
+        image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 3,
+        name: "Gorra Trucker Cyberpunk Edition",
+        category: "gorras",
+        priceUsd: 22.00,
+        tag: "oferta",
+        oldPriceUsd: 30.00,
+        image: "https://images.unsplash.com/photo-1534215488177-c914c62b6cf8?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 4,
+        name: "Crocs Echo Clog Limited",
+        category: "crocs",
+        priceUsd: 65.00,
+        tag: "exclusivo",
+        image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 5,
+        name: "Gorra Gold Edition Drop II",
+        category: "proximamente",
+        priceUsd: 28.00,
+        tag: "proximamente",
+        image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=500&q=80"
+    }
+];
+
+let currentCategory = 'all';
+let currentSearch = '';
+let bcvRate = 36.50; // Tasa de respaldo por defecto si falla la API
+let cart = [];
+
+// OBTENER TASA BCV AUTOMÁTICA
+async function fetchBcvRate() {
+    try {
+        // Usamos una API pública de monitoreo en Venezuela o respaldo
+        const res = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
+        const data = await res.json();
+        if (data && data.promedio) {
+            bcvRate = data.promedio;
+        }
+    } catch (error) {
+        console.log("Usando tasa interna de respaldo");
+    } finally {
+        document.getElementById('bcv-val').innerText = `Bs. ${bcvRate.toFixed(2)}`;
+        document.getElementById('bcv-spinner').classList.remove('animate-spin');
+        document.getElementById('bcv-spinner').className = "fa-solid fa-circle-check text-emerald-400";
+        renderProducts();
+        updateCartUI();
+    }
+}
+
+// RENDERIZAR PRODUCTOS EN PANTALLA
+function renderProducts() {
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = '';
+
+    // Filtrar productos
+    let filtered = products.filter(p => {
+        const matchesCategory = currentCategory === 'all' || 
+                                p.category === currentCategory || 
+                                p.tag === currentCategory;
+        const matchesSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-2 text-center py-12 text-gray-500 text-xs">
+                <i class="fa-solid fa-box-open text-3xl mb-2 text-gray-600"></i>
+                <p>No se encontraron productos en esta categoría.</p>
+            </div>
+        `;
+        return;
+    }
+
+    filtered.forEach(p => {
+        const priceVes = (p.priceUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        
+        // Insignia según el tag
+        let badgeHTML = '';
+        if (p.tag === 'oferta') badgeHTML = `<span class="absolute top-2 left-2 bg-emerald-500/90 backdrop-blur-md text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">OFERTA</span>`;
+        if (p.tag === 'exclusivo') badgeHTML = `<span class="absolute top-2 left-2 bg-amber-500/90 backdrop-blur-md text-black text-[9px] font-extrabold px-2 py-0.5 rounded-full shadow">EXCLUSIVO</span>`;
+        if (p.tag === 'proximamente') badgeHTML = `<span class="absolute top-2 left-2 bg-blue-500/90 backdrop-blur-md text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">PRÓXIMAMENTE</span>`;
+
+        let actionButton = `<button onclick="addToCart(${p.id})" class="w-full py-2 bg-white/10 hover:bg-purple-600 text-white font-bold text-[11px] rounded-xl transition active:scale-95 flex items-center justify-center gap-1.5"><i class="fa-solid fa-plus"></i> Añadir</button>`;
+        if(p.tag === 'proximamente') {
+            actionButton = `<div class="w-full py-2 bg-white/5 text-gray-400 font-medium text-[11px] text-center rounded-xl">Pronto disponible</div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = "product-card bg-[#121216] border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between p-2.5 shadow-lg relative";
+        card.innerHTML = `
+            <div>
+                <div class="relative w-full h-36 rounded-xl overflow-hidden bg-black/40 mb-2.5">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                    ${badgeHTML}
+                </div>
+                <h3 class="font-semibold text-xs text-gray-200 line-clamp-2 mb-1">${p.name}</h3>
+            </div>
+            <div class="mt-2 pt-2 border-t border-white/5 space-y-2">
+                <div>
+                    <div class="text-sm font-extrabold text-white">$${p.priceUsd.toFixed(2)}</div>
+                    <div class="text-[10px] text-emerald-400 font-medium">Bs. ${priceVes}</div>
+                </div>
+                ${actionButton}
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// CAMBIAR CATEGORÍA DESDE LOS BOTONES
+function setCategory(cat) {
+    currentCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    renderProducts();
+}
+
+// FILTRAR POR BUSCADOR
+function filterProducts() {
+    currentSearch = document.getElementById('search-input').value;
+    renderProducts();
+}
+
+// FUNCIONES DEL CARRITO
+function toggleCart() {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    const isOpen = drawer.classList.contains('translate-y-full');
+
+    if (isOpen) {
+        drawer.classList.remove('translate-y-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+    } else {
+        drawer.classList.add('translate-y-full');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+    }
+}
+
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+    updateCartUI();
+    
+    // Abrir automáticamente el carrito al añadir
+    const drawer = document.getElementById('cart-drawer');
+    if (drawer.classList.contains('translate-y-full')) {
+        toggleCart();
+    }
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const container = document.getElementById('cart-items');
+    const counter = document.getElementById('cart-counter');
+    const totalUsdEl = document.getElementById('cart-total-usd');
+    const totalVesEl = document.getElementById('cart-total-ves');
+
+    let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    
+    if (totalItems > 0) {
+        counter.innerText = totalItems;
+        counter.classList.remove('scale-0');
+    } else {
+        counter.classList.add('scale-0');
+    }
+
+    if (cart.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-500 text-xs py-8">Tu bolsa está vacía.</p>`;
+        totalUsdEl.innerText = "$0.00";
+        totalVesEl.innerText = "Bs. 0.00";
+        return;
+    }
+
+    container.innerHTML = '';
+    let totalUsd = 0;
+
+    cart.forEach(item => {
+        let itemTotalUsd = item.priceUsd * item.qty;
+        totalUsd += itemTotalUsd;
+        let itemTotalVes = (itemTotalUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between bg-white/5 p-2.5 rounded-xl border border-white/5 text-xs";
+        div.innerHTML = `
+            <div class="flex items-center gap-2.5">
+                <img src="${item.image}" class="w-10 h-10 object-cover rounded-lg">
+                <div>
+                    <h4 class="font-semibold text-white line-clamp-1">${item.name}</h4>
+                    <p class="text-[10px] text-gray-400">Cant: ${item.qty} | $${item.priceUsd.toFixed(2)} c/u</p>
+                    <p class="text-[10px] text-emerald-400 font-medium">Bs. ${itemTotalVes}</p>
+                </div>
+            </div>
+            <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
+        `;
+        container.appendChild(div);
+    });
+
+    totalUsdEl.innerText = `$${totalUsd.toFixed(2)}`;
+    totalVesEl.innerText = `Bs. ${(totalUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+// CHECKOUT A WHATSAPP
+function checkoutWhatsApp() {
+    if (cart.length === 0) {
+        alert("Tu bolsa está vacía");
+        return;
+    }
+
+    const name = document.getElementById('client-name').value.trim();
+    const city = document.getElementById('client-city').value.trim();
+
+    if (!name || !city) {
+        alert("Por favor ingresa tu nombre y ciudad para coordinar el pedido.");
+        return;
+    }
+
+    let message = `🔥 *NUEVO PEDIDO - PHANTOMCLUB* 🔥\n\n`;
+    message += `👤 *Cliente:* ${name}\n`;
+    message += `📍 *Ciudad:* ${city}\n\n`;
+    message += `🛒 *DETALLES DEL PEDIDO:*\n`;
+
+    let totalUsd = 0;
+    cart.forEach(item => {
+        let subUsd = item.priceUsd * item.qty;
+        totalUsd += subUsd;
+        message += `• ${item.qty}x ${item.name} ($${subUsd.toFixed(2)})\n`;
+    });
+
+    let totalVes = totalUsd * bcvRate;
+    message += `\n💰 *Total USD:* $${totalUsd.toFixed(2)}`;
+    message += `\n🇻🇪 *Total BCV (~${bcvRate.toFixed(2)}):* Bs. ${totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\n`;
+    message += `Hola, quiero coordinar el pago y entrega de este pedido.`;
+
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
+}
+
+// INICIALIZAR AL CARGAR LA PÁGINA
+window.addEventListener('DOMContentLoaded', () => {
+    fetchBcvRate();
+});
