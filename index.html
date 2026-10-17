@@ -15,7 +15,7 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Botones principales grandes y estilo premium con iconos a medida */
+        /* Pestañas principales grandes y estilo premium */
         .tab-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -68,4 +68,470 @@
     <!-- SECCIÓN HERO Y BUSCADOR -->
     <section class="px-4 pt-4 pb-1">
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-950/40 via-zinc-900/60 to-black p-5 border border-white/10 shadow-xl">
-            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-purple-600/15 rounded-full
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-purple-600/15 rounded-full blur-2xl pointer-events-none"></div>
+            <span class="inline-block text-[9px] font-black tracking-widest uppercase bg-purple-500/20 text-purple-300 px-2.5 py-0.5 rounded-full mb-2 border border-purple-500/30">Catálogo Exclusivo</span>
+            <h1 class="text-lg font-black tracking-tight mb-1 text-white">PhantomClub Store</h1>
+            <p class="text-[11px] text-gray-400 mb-3 leading-relaxed">Selecciona una categoría, explora los detalles, elige tu talla y ordena.</p>
+            
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input type="text" id="search-input" oninput="filterProducts()" placeholder="Buscar producto..." class="w-full bg-black/60 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 PESTAÑAS PRINCIPALES (CROCS, GORRAS, PRÓXIMAMENTE) -->
+    <section class="px-4 py-3">
+        <div class="grid grid-cols-3 gap-2.5">
+            <button onclick="setTab('crocs')" id="btn-tab-crocs" class="tab-btn active flex flex-col items-center justify-center gap-1.5 p-3.5 rounded-2xl text-xs font-bold active:scale-95 group">
+                <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 13.5C19 16 16.5 19 12 19s-7-3-7-5.5C5 11 7 8 9 7h6c2 0 4 4 4 6.5zM7.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3-1a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 1a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
+                </div>
+                <span>Crocs</span>
+            </button>
+
+            <button onclick="setTab('gorras')" id="btn-tab-gorras" class="tab-btn flex flex-col items-center justify-center gap-1.5 p-3.5 rounded-2xl text-xs font-bold active:scale-95 group">
+                <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.63 3.34 1.68 4.59L5.5 18h13l-1.18-4.41C18.37 12.34 19 10.74 19 9c0-3.87-3.13-7-7-7zm0 2c2.76 0 5 2.24 5 5s-2.24 5-5 5-5-2.24-5-5 2.24-5 5-5zm-7 15v2h14v-2H5z"/></svg>
+                </div>
+                <span>Gorras</span>
+            </button>
+
+            <button onclick="setTab('proximamente')" id="btn-tab-proximamente" class="tab-btn flex flex-col items-center justify-center gap-1.5 p-3.5 rounded-2xl text-xs font-bold active:scale-95 group">
+                <div class="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-clock text-base"></i>
+                </div>
+                <span>Próximamente</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- GRID DE PRODUCTOS -->
+    <main class="px-4 py-2">
+        <div id="products-grid" class="grid grid-cols-2 gap-3"></div>
+    </main>
+
+    <!-- MODAL DE DETALLES Y SELECCIÓN DE TALLA -->
+    <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modal-card" class="glass w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 border border-white/10 shadow-2xl transform translate-y-full transition-transform duration-300 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start">
+                <span id="modal-tag" class="text-[9px] font-black tracking-widest uppercase px-2.5 py-0.5 rounded-full"></span>
+                <button onclick="closeProductModal()" class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="w-full h-48 rounded-2xl overflow-hidden bg-black/50 border border-white/10">
+                <img id="modal-img" src="" class="w-full h-full object-cover">
+            </div>
+
+            <div class="space-y-1">
+                <h2 id="modal-name" class="text-base font-extrabold text-white"></h2>
+                <div class="flex items-baseline gap-2 pt-1">
+                    <span id="modal-price-usd" class="text-lg font-black text-white"></span>
+                    <span id="modal-price-ves" class="text-xs font-bold text-emerald-400"></span>
+                </div>
+            </div>
+
+            <div class="space-y-1 bg-white/5 p-3 rounded-xl border border-white/5">
+                <span class="text-[10px] font-bold text-purple-400 uppercase">Descripción</span>
+                <p id="modal-desc" class="text-xs text-gray-300 leading-relaxed"></p>
+            </div>
+
+            <div class="space-y-1.5" id="sizes-container">
+                <label class="text-[10px] font-bold text-gray-400 uppercase">Selecciona tu Talla:</label>
+                <div id="modal-sizes" class="flex gap-2 flex-wrap"></div>
+            </div>
+
+            <div id="modal-action-wrapper" class="pt-2"></div>
+        </div>
+    </div>
+
+    <!-- CARRITO DE COMPRAS / PANEL LATERAL -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart()"></div>
+    
+    <div id="cart-drawer" class="fixed bottom-0 left-0 right-0 max-h-[85vh] glass border-t border-white/10 rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-purple-400"></i>
+                <h2 class="font-bold text-xs text-white uppercase tracking-wider">Bolsa de Pedidos</h2>
+            </div>
+            <button onclick="toggleCart()" class="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <div id="cart-items" class="p-4 overflow-y-auto flex-1 space-y-3 max-h-[35vh]"></div>
+
+        <div class="p-4 border-t border-white/10 bg-black/40 space-y-3">
+            <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-gray-400">
+                    <span>Total USD:</span>
+                    <span id="cart-total-usd" class="font-bold text-white">$0.00</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Total Estimado BCV:</span>
+                    <span id="cart-total-ves" class="font-bold text-emerald-400">Bs. 0.00</span>
+                </div>
+            </div>
+
+            <div class="space-y-2 pt-1">
+                <input type="text" id="client-name" placeholder="Tu Nombre y Apellido" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+                <input type="text" id="client-city" placeholder="Ciudad / Estado de envío" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+                <input type="text" id="client-details" placeholder="Notas adicionales (opcional)" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+            </div>
+
+            <button onclick="checkoutWhatsApp()" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 transition active:scale-95">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Enviar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE FUNCIONALIDAD -->
+    <script>
+        const WHATSAPP_NUMBER = "584121234567"; // Cambia por tu número de WhatsApp
+
+        let products = [
+            {
+                id: 1,
+                name: "Crocs Classic Platform Clog",
+                tab: "crocs",
+                tag: "oferta",
+                priceUsd: 45.00,
+                oldPriceUsd: 55.00,
+                description: "Zuecos con plataforma elevada, diseño ergonómico de máxima comodidad, ventilación avanzada y ligeros.",
+                sizes: ["36", "37", "38", "39", "40"],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 2,
+                name: "Crocs Echo Clog Limited Edition",
+                tab: "crocs",
+                tag: "exclusivo",
+                priceUsd: 65.00,
+                description: "Edición especial futurista con detalles moldeados y soporte de talón ajustable. Comodidad extrema.",
+                sizes: ["39", "40", "41", "42", "43"],
+                image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 3,
+                name: "Crocs Classic All-Terrain",
+                tab: "crocs",
+                tag: "agotado",
+                priceUsd: 50.00,
+                description: "Suela exterior robusta con mayor tracción y soporte para cualquier aventura urbana o al aire libre.",
+                sizes: ["38", "39", "40", "41", "42"],
+                image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 4,
+                name: "Gorra Phantom Snapback Black",
+                tab: "gorras",
+                tag: "exclusivo",
+                priceUsd: 25.00,
+                description: "Gorra snapback de alta calidad con bordado 3D PhantomClub en relieve y cierre ajustable.",
+                sizes: ["Única (Ajustable)"],
+                image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 5,
+                name: "Gorra Trucker Cyberpunk Edition",
+                tab: "gorras",
+                tag: "oferta",
+                priceUsd: 22.00,
+                oldPriceUsd: 30.00,
+                description: "Diseño trucker con malla trasera transpirable, panel frontal rígido y estilo urbano nocturno.",
+                sizes: ["Única (Ajustable)"],
+                image: "https://images.unsplash.com/photo-1534215488177-c914c62b6cf8?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 6,
+                name: "Gorra Phantom Dad Hat",
+                tab: "gorras",
+                tag: "agotado",
+                priceUsd: 20.00,
+                description: "Estilo clásico desestructurado de algodón suave con hebilla metálica personalizada.",
+                sizes: ["Única (Ajustable)"],
+                image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 7,
+                name: "Gorra Gold Edition Drop II",
+                tab: "proximamente",
+                tag: "proximamente",
+                priceUsd: 28.00,
+                description: "Próximo lanzamiento exclusivo con acabados dorados metalizados y detalles en edición limitada.",
+                sizes: ["Única (Ajustable)"],
+                image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 8,
+                name: "Crocs Mega Crush Clog Future",
+                tab: "proximamente",
+                tag: "proximamente",
+                priceUsd: 70.00,
+                description: "Próxima colección con plataforma exagerada y detalles texturizados rompedores.",
+                sizes: ["37", "38", "39", "40", "41"],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=500&q=80"
+            }
+        ];
+
+        let currentTab = 'crocs';
+        let currentSearch = '';
+        let bcvRate = 36.50; 
+        let cart = [];
+        let selectedProduct = null;
+        let selectedSize = '';
+
+        async function fetchBcvRate() {
+            try {
+                const res = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar/page?page=bcv');
+                const data = await res.json();
+                if (data && data.price) {
+                    bcvRate = parseFloat(data.price);
+                } else {
+                    const res2 = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
+                    const data2 = await res2.json();
+                    if (data2 && data2.promedio) bcvRate = data2.promedio;
+                }
+            } catch (error) {
+                console.log("Usando tasa de respaldo interna");
+            } finally {
+                document.getElementById('bcv-val').innerText = `Bs. ${bcvRate.toFixed(2)}`;
+                document.getElementById('bcv-spinner').className = "fa-solid fa-circle-check text-emerald-400";
+                renderProducts();
+                updateCartUI();
+            }
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            let filtered = products.filter(p => {
+                const matchesTab = p.tab === currentTab;
+                const matchesSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchesTab && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-gray-500 text-xs"><i class="fa-solid fa-box-open text-3xl mb-2 text-gray-600"></i><p>No hay productos en esta sección.</p></div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const priceVes = (p.priceUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                
+                let badgeHTML = '';
+                if (p.tag === 'oferta') badgeHTML = `<span class="absolute top-2 left-2 bg-emerald-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">OFERTA</span>`;
+                if (p.tag === 'exclusivo') badgeHTML = `<span class="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-black px-2 py-0.5 rounded-full shadow">EXCLUSIVO</span>`;
+                if (p.tag === 'agotado') badgeHTML = `<span class="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">AGOTADO</span>`;
+                if (p.tag === 'proximamente') badgeHTML = `<span class="absolute top-2 left-2 bg-blue-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">PRÓXIMO</span>`;
+
+                const card = document.createElement('div');
+                card.className = "product-card glass rounded-2xl overflow-hidden flex flex-col justify-between p-2.5 shadow-xl relative border border-white/10 cursor-pointer active:scale-95 transition-transform";
+                card.onclick = () => openProductModal(p.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="relative w-full h-36 rounded-xl overflow-hidden bg-black/50 mb-2">
+                            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                            ${badgeHTML}
+                        </div>
+                        <h3 class="font-semibold text-xs text-gray-200 line-clamp-2 mb-1">${p.name}</h3>
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-white/5">
+                        <div class="text-sm font-extrabold text-white">$${p.priceUsd.toFixed(2)}</div>
+                        <div class="text-[10px] text-emerald-400 font-bold">Bs. ${priceVes}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function setTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-tab-${tab}`).classList.add('active');
+            renderProducts();
+        }
+
+        function filterProducts() {
+            currentSearch = document.getElementById('search-input').value;
+            renderProducts();
+        }
+
+        function openProductModal(id) {
+            selectedProduct = products.find(p => p.id === id);
+            selectedSize = selectedProduct.sizes[0];
+
+            const modal = document.getElementById('product-modal');
+            const card = document.getElementById('modal-card');
+
+            document.getElementById('modal-img').src = selectedProduct.image;
+            document.getElementById('modal-name').innerText = selectedProduct.name;
+            document.getElementById('modal-desc').innerText = selectedProduct.description;
+            document.getElementById('modal-price-usd').innerText = `$${selectedProduct.priceUsd.toFixed(2)}`;
+            document.getElementById('modal-price-ves').innerText = `Bs. ${(selectedProduct.priceUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            const tagEl = document.getElementById('modal-tag');
+            tagEl.innerText = selectedProduct.tag.toUpperCase();
+            tagEl.className = "text-[9px] font-black tracking-widest uppercase px-2.5 py-0.5 rounded-full shadow ";
+            if(selectedProduct.tag === 'oferta') tagEl.classList.add('bg-emerald-500', 'text-white');
+            else if(selectedProduct.tag === 'exclusivo') tagEl.classList.add('bg-amber-500', 'text-black');
+            else if(selectedProduct.tag === 'agotado') tagEl.classList.add('bg-red-600', 'text-white');
+            else tagEl.classList.add('bg-blue-500', 'text-white');
+
+            const sizesContainer = document.getElementById('modal-sizes');
+            sizesContainer.innerHTML = '';
+            selectedProduct.sizes.forEach((size, index) => {
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-bold border transition ${index === 0 ? 'bg-purple-600 border-purple-500 text-white shadow' : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'}`;
+                btn.innerText = size;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectedSize = size;
+                    document.querySelectorAll('#modal-sizes button').forEach(b => {
+                        b.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold border bg-white/5 border-white/10 text-gray-300 hover:bg-white/10";
+                    });
+                    btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold border bg-purple-600 border-purple-500 text-white shadow";
+                };
+                sizesContainer.appendChild(btn);
+            });
+
+            const actionWrapper = document.getElementById('modal-action-wrapper');
+            if (selectedProduct.tag === 'agotado') {
+                actionWrapper.innerHTML = `<div class="w-full py-3 bg-red-600/20 border border-red-500/30 text-red-400 font-bold text-xs text-center rounded-xl">Producto Agotado Temporalmente</div>`;
+                document.getElementById('sizes-container').style.display = 'none';
+            } else if (selectedProduct.tag === 'proximamente') {
+                actionWrapper.innerHTML = `<div class="w-full py-3 bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold text-xs text-center rounded-xl">Próximamente disponible en tienda</div>`;
+                document.getElementById('sizes-container').style.display = 'none';
+            } else {
+                document.getElementById('sizes-container').style.display = 'block';
+                actionWrapper.innerHTML = `<button onclick="addCurrentToCart()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-purple-900/30 transition active:scale-95 flex items-center justify-center gap-2"><i class="fa-solid fa-bag-shopping"></i> Añadir a la Bolsa</button>`;
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => card.classList.remove('translate-y-full'), 10);
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            const card = document.getElementById('modal-card');
+            card.classList.add('translate-y-full');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function addCurrentToCart() {
+            if (!selectedProduct) return;
+            const existing = cart.find(item => item.id === selectedProduct.id && item.size === selectedSize);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...selectedProduct, size: selectedSize, qty: 1 });
+            }
+            updateCartUI();
+            closeProductModal();
+            toggleCart();
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            const isOpen = drawer.classList.contains('translate-y-full');
+            if (isOpen) {
+                drawer.classList.remove('translate-y-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.add('translate-y-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const counter = document.getElementById('cart-counter');
+            const totalUsdEl = document.getElementById('cart-total-usd');
+            const totalVesEl = document.getElementById('cart-total-ves');
+
+            let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalItems > 0) {
+                counter.innerText = totalItems;
+                counter.classList.remove('scale-0');
+            } else {
+                counter.classList.add('scale-0');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-500 text-xs py-6">Tu bolsa está vacía.</p>`;
+                totalUsdEl.innerText = "$0.00";
+                totalVesEl.innerText = "Bs. 0.00";
+                return;
+            }
+
+            container.innerHTML = '';
+            let totalUsd = 0;
+
+            cart.forEach((item, index) => {
+                let itemTotalUsd = item.priceUsd * item.qty;
+                totalUsd += itemTotalUsd;
+                let itemTotalVes = (itemTotalUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-white/5 p-2.5 rounded-xl border border-white/5 text-xs";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <img src="${item.image}" class="w-10 h-10 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-semibold text-white line-clamp-1">${item.name}</h4>
+                            <p class="text-[10px] text-gray-400">Talla: ${item.size} | Cant: ${item.qty}</p>
+                            <p class="text-[10px] text-white font-bold">$${itemTotalUsd.toFixed(2)} <span class="text-emerald-400 font-medium">(Bs. ${itemTotalVes})</span></p>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-400 p-2"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(div);
+            });
+
+            totalUsdEl.innerText = `$${totalUsd.toFixed(2)}`;
+            totalVesEl.innerText = `Bs. ${(totalUsd * bcvRate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) { alert("Tu bolsa está vacía"); return; }
+            const name = document.getElementById('client-name').value.trim();
+            const city = document.getElementById('client-city').value.trim();
+            const clientDetails = document.getElementById('client-details').value.trim();
+
+            if (!name || !city) { alert("Por favor ingresa tu nombre y ciudad."); return; }
+
+            let message = `🔥 *NUEVO PEDIDO - PHANTOMCLUB* 🔥\n\n`;
+            message += `👤 *Cliente:* ${name}\n📍 *Ciudad:* ${city}\n`;
+            if(clientDetails) message += `📝 *Notas:* ${clientDetails}\n`;
+            message += `\n🛒 *PRODUCTOS SOLICITADOS:*\n`;
+            
+            let totalUsd = 0;
+            cart.forEach(item => {
+                let subUsd = item.priceUsd * item.qty;
+                totalUsd += subUsd;
+                message += `• ${item.qty}x ${item.name} (Talla: ${item.size}) - $${subUsd.toFixed(2)}\n`;
+            });
+
+            let totalVes = totalUsd * bcvRate;
+            message += `\n💰 *Total USD:* $${totalUsd.toFixed(2)}`;
+            message += `\n🇻🇪 *Tasa BCV del día:* Bs. ${bcvRate.toFixed(2)}`;
+            message += `\n💵 *Total en Bolívares:* Bs. ${totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            message += `\n\nHola, quiero coordinar mi pago y envío.`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchBcvRate);
+    </script>
+</body>
+</html>
