@@ -21,6 +21,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
         .glass-panel { background: rgba(18, 18, 21, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glow-white { box-shadow: 0 0 25px -5px rgba(255, 255, 255, 0.15); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -33,7 +36,6 @@
 
     <header class="sticky top-0 z-50 glass-panel border-b border-white/10 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <!-- Logo Phantom Personalizado -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-white/20 to-phantom-900 border border-white/30 flex items-center justify-center group-hover:border-white transition-all duration-300 glow-white">
                     <svg class="w-6 h-6 text-white transform group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -49,11 +51,10 @@
                 </div>
             </a>
 
-            <!-- Buscador -->
             <div class="hidden md:flex items-center relative flex-1 max-w-md mx-4">
                 <span class="absolute left-3.5 text-phantom-400 pointer-events-none"><i data-lucide="search" class="w-4 h-4"></i></span>
-                <input type="text" id="desktop-search-input" placeholder="Buscar productos..." 
-                    class="w-full bg-phantom-900/90 text-sm text-white placeholder-phantom-500 pl-10 pr-4 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-white/40">
+                <input type="text" id="desktop-search-input" placeholder="Buscar gorras, crocs, ropa..." oninput="handleSearch(this.value)"
+                    class="w-full bg-phantom-900/90 text-sm text-white placeholder-phantom-500 pl-10 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-white/40">
             </div>
 
             <div class="flex items-center gap-3 shrink-0">
@@ -72,14 +73,12 @@
     </header>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <!-- Categorías -->
         <section class="mb-8">
             <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between bg-phantom-900/60 p-3 rounded-2xl border border-white/10 backdrop-blur-xl">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full lg:w-auto" id="category-buttons">
                     <button onclick="setCategory('todo')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 bg-white text-black shadow-lg" data-category="todo">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> Todo
                     </button>
-                    <!-- Gorras con SVG Táctico -->
                     <button onclick="setCategory('gorras')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white border border-white/5" data-category="gorras">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M2 12h20M12 4a8 8 0 0 0-8 8v2h16v-2a8 8 0 0 0-8-8zM17 14v4a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-4"/>
@@ -95,20 +94,28 @@
                         <i data-lucide="clock" class="w-4 h-4"></i> Próximamente
                     </button>
                 </div>
+                <div class="relative w-full lg:w-80">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-phantom-400"><i data-lucide="search" class="w-4 h-4"></i></span>
+                    <input type="text" id="main-search-input" oninput="handleSearch(this.value)" placeholder="Buscar en catálogo..." 
+                        class="w-full bg-phantom-950 text-sm text-white placeholder-phantom-500 pl-10 pr-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-white/40">
+                </div>
             </div>
         </section>
+
+        <!-- Subfiltros Originales -->
+        <section id="subfilters-container" class="mb-8 flex items-center gap-2 overflow-x-auto pb-2"></section>
 
         <!-- Grid de Productos -->
         <section class="mb-16">
             <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div id="empty-state" class="hidden text-center py-20 bg-phantom-900/40 rounded-3xl border border-white/5">
-                <h3 class="text-lg font-bold text-white mb-1">No hay productos disponibles</h3>
-                <p class="text-sm text-phantom-400">Prueba cambiando de categoría o revisa el panel de administración.</p>
+                <h3 class="text-lg font-bold text-white mb-1">No se encontraron productos</h3>
+                <p class="text-sm text-phantom-400">Intenta ajustando tu búsqueda o cambiando de categoría.</p>
             </div>
         </section>
     </main>
 
-    <!-- Carrito -->
+    <!-- Carrito Drawer -->
     <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-300">
         <div id="cart-backdrop" onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-md opacity-0 transition-opacity pointer-events-none"></div>
         <div id="cart-panel" class="absolute inset-y-0 right-0 max-w-md w-full bg-phantom-950 border-l border-white/10 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 pointer-events-auto">
@@ -132,12 +139,30 @@
         </div>
     </div>
 
-    <!-- Script de la tienda -->
+    <!-- Modal de Detalle de Producto -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto opacity-0 pointer-events-none transition-all duration-300">
+        <div onclick="closeModal()" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div id="modal-content-box" class="relative bg-phantom-950 border border-white/15 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl z-10 flex flex-col">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-black/80 text-white hover:bg-white hover:text-black transition-all">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="modal-body-content" class="overflow-y-auto max-h-[90vh]"></div>
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-phantom-950 mt-20 py-12 text-center text-sm text-phantom-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+            <span class="font-black text-white tracking-widest uppercase">PHANTOM CLUB STORE</span>
+            <p class="text-xs">&copy; 2026 Phantom Club. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
     <script>
         let BCV_RATE = 852.42;
         let products = [];
         let cart = [];
         let currentCategory = 'todo';
+        let currentSubfilter = 'todas';
         let searchQuery = '';
 
         async function initStore() {
@@ -145,25 +170,29 @@
                 const res = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
                 const data = await res.json();
                 if (data && data.promedio) BCV_RATE = parseFloat(data.promedio);
-            } catch (e) { console.log('Tasa respaldo BCV'); }
+            } catch (e) { console.log('Tasa respaldo BCV local'); }
 
             document.getElementById('header-bcv-rate').innerText = `Bs. ${BCV_RATE.toFixed(2)}`;
             
-            // Cargar productos de localStorage o usar datos por defecto
             const saved = localStorage.getItem('phantom_products');
             if (saved) {
                 products = JSON.parse(saved);
             } else {
                 products = [
-                    { id: 1, name: "Gorra Phantom Steel Edition", category: "gorras", subfilter: "exclusivas", priceUSD: 35.00, badge: "Exclusiva", badgeColor: "bg-white/10 text-white border-white/30", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4", imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Gorra+Steel", description: "Gorra trucker de alta gama con bordado 3D.", sizes: ["Única"], stock: 8, specs: ["100% Algodón", "Edición limitada"] }
+                    { id: 1, name: "Gorra Phantom Steel Edition", category: "gorras", subfilter: "exclusivas", priceUSD: 35.00, badge: "Exclusiva", badgeColor: "bg-white/10 text-white border-white/30", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4", imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Gorra+Steel", description: "Gorra trucker de alta gama con bordado 3D en relieve plateado.", sizes: ["Única"], stock: 8, specs: ["100% Algodón", "Edición limitada"] },
+                    { id: 2, name: "Gorra Cyberpunk Monochrome", category: "gorras", subfilter: "ofertas", priceUSD: 24.00, badge: "Oferta", badgeColor: "bg-white text-black font-extrabold", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4", imageUrl: "https://placehold.co/600x600/18181b/a1a1aa?text=Gorra+Cyber", description: "Gorra estilo cyberpunk con detalles reflectantes oscuros.", sizes: ["Única"], stock: 12, specs: ["Reflectante 3M", "Repelente al agua"] },
+                    { id: 3, name: "Crocs Phantom Stealth Wave", category: "crocs", subfilter: "exclusivas", priceUSD: 65.00, badge: "Exclusiva", badgeColor: "bg-white/10 text-white border-white/30", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4", imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Crocs+Stealth", description: "Edición especial modificada con tiras de alta resistencia.", sizes: ["39-40", "41-42"], stock: 5, specs: ["Resistente al agua", "Con Jibbitz metálicos"] },
+                    { id: 4, name: "Próximamente: Phantom Jacket", category: "proximamente", subfilter: "proximamente", priceUSD: 120.00, badge: "Próximamente", badgeColor: "bg-white/10 text-white border-white/30", videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-walking-down-the-street-42170-large.mp4", imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Jacket", description: "Chaqueta cortavientos impermeable con múltiples bolsillos.", sizes: ["S", "M", "L"], stock: 25, specs: ["Impermeable 10k"] }
                 ];
                 localStorage.setItem('phantom_products', JSON.stringify(products));
             }
+            renderSubfilters();
             renderProducts();
         }
 
         function setCategory(cat) {
             currentCategory = cat;
+            currentSubfilter = 'todas';
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if(btn.dataset.category === cat) {
                     btn.className = "cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 bg-white text-black shadow-lg";
@@ -171,13 +200,57 @@
                     btn.className = "cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white border border-white/5";
                 }
             });
+            renderSubfilters();
+            renderProducts();
+        }
+
+        function renderSubfilters() {
+            const container = document.getElementById('subfilters-container');
+            let filters = [];
+            if (currentCategory === 'todo' || currentCategory === 'gorras' || currentCategory === 'crocs') {
+                filters = [
+                    { id: 'todas', label: 'Todas' },
+                    { id: 'exclusivas', label: '⭐ Exclusivas' },
+                    { id: 'ofertas', label: '🔥 Ofertas' },
+                    { id: 'agotados', label: '❌ Agotados' }
+                ];
+            } else if (currentCategory === 'proximamente') {
+                filters = [{ id: 'proximamente', label: '🚀 Próximos Lanzamientos' }];
+            }
+
+            container.innerHTML = filters.map(f => `
+                <button onclick="setSubfilter('${f.id}')" class="px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap border transition-all ${currentSubfilter === f.id ? 'bg-white text-black border-white shadow-md' : 'bg-phantom-900/80 text-phantom-400 hover:text-white border-white/5'}">
+                    ${f.label}
+                </button>
+            `).join('');
+        }
+
+        function setSubfilter(sub) {
+            currentSubfilter = sub;
+            renderSubfilters();
+            renderProducts();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.toLowerCase().trim();
             renderProducts();
         }
 
         function renderProducts() {
             const grid = document.getElementById('product-grid');
             const empty = document.getElementById('empty-state');
-            const filtered = products.filter(p => currentCategory === 'todo' || p.category === currentCategory);
+
+            const filtered = products.filter(p => {
+                let matchCat = currentCategory === 'todo' || p.category === currentCategory;
+                let matchSub = true;
+                if (currentSubfilter !== 'todas') {
+                    if (currentSubfilter === 'proximamente') matchSub = p.category === 'proximamente';
+                    else if (currentSubfilter === 'agotados') matchSub = p.stock === 0 || p.subfilter === 'agotados';
+                    else matchSub = p.subfilter === currentSubfilter;
+                }
+                let matchSearch = searchQuery === '' || p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
+                return matchCat && matchSub && matchSearch;
+            });
 
             if(filtered.length === 0) {
                 grid.innerHTML = '';
@@ -189,85 +262,13 @@
             grid.innerHTML = filtered.map(p => {
                 const ves = (p.priceUSD * BCV_RATE).toLocaleString('es-VE', {minimumFractionDigits: 2});
                 return `
-                    <div class="product-card group bg-phantom-900/60 rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between shadow-xl">
-                        <div class="relative w-full h-64 bg-black overflow-hidden">
+                    <div class="product-card group bg-phantom-900/60 rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between shadow-xl animate-fade-in">
+                        <div class="relative w-full h-64 bg-black overflow-hidden cursor-pointer" onclick="openModal(${p.id})">
                             <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
                                 <source src="${p.videoUrl}" type="video/mp4">
                             </video>
-                            <div class="absolute top-4 left-4"><span class="px-3 py-1 rounded-full text-[11px] font-bold border ${p.badgeColor}">${p.badge}</span></div>
+                            <div class="absolute top-4 left-4"><span class="px-3 py-1 rounded-full text-[11px] font-bold border backdrop-blur-md ${p.badgeColor}">${p.badge}</span></div>
+                            <div class="absolute top-4 right-4 bg-black/70 px-2.5 py-1 rounded-lg text-[11px] text-phantom-300 border border-white/10">${p.stock > 0 ? `${p.stock} disp.` : 'Agotado'}</div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow justify-between">
                             <div>
-                                <span class="text-[10px] font-black uppercase text-phantom-400 block mb-1">${p.category}</span>
-                                <h3 class="text-base font-bold text-white mb-2">${p.name}</h3>
-                                <p class="text-xs text-phantom-400 line-clamp-2 mb-4">${p.description}</p>
-                            </div>
-                            <div class="pt-4 border-t border-white/10 flex items-end justify-between">
-                                <div>
-                                    <div class="text-2xl font-black text-white">$${p.priceUSD.toFixed(2)}</div>
-                                    <div class="text-xs text-phantom-400">Bs. ${ves}</div>
-                                </div>
-                                <button onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''} class="px-4 py-2 rounded-xl ${p.stock > 0 ? 'bg-white text-black font-bold hover:bg-phantom-200' : 'bg-phantom-800 text-phantom-500 cursor-not-allowed'} text-xs transition-all">
-                                    ${p.stock > 0 ? 'Comprar' : 'Agotado'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            lucide.createIcons();
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('pointer-events-none');
-            document.getElementById('cart-panel').classList.toggle('translate-x-full');
-            document.getElementById('cart-backdrop').classList.toggle('opacity-0');
-        }
-
-        function addToCart(id) {
-            const p = products.find(prod => prod.id === id);
-            if(!p || p.stock === 0) return;
-            cart.push({ ...p, quantity: 1, size: p.sizes ? p.sizes[0] : 'Única' });
-            updateCartUI();
-            toggleCart();
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cart-items-container');
-            const badge = document.getElementById('cart-badge');
-            badge.innerText = cart.length;
-            badge.classList.toggle('scale-0', cart.length === 0);
-            badge.classList.toggle('scale-100', cart.length > 0);
-
-            if(cart.length === 0) {
-                container.innerHTML = `<p class="text-center text-phantom-400 py-10 text-xs">Tu carrito está vacío</p>`;
-                document.getElementById('cart-total-usd').innerText = '$0.00';
-                document.getElementById('cart-total-ves').innerText = 'Bs. 0.00';
-                return;
-            }
-
-            let totalUSD = 0;
-            container.innerHTML = cart.map((item, idx) => {
-                totalUSD += item.priceUSD;
-                return `<div class="flex justify-between items-center bg-phantom-900 p-3 rounded-xl border border-white/10 text-xs">
-                    <div><span class="font-bold text-white">${item.name}</span><br><span class="text-phantom-400">$${item.priceUSD.toFixed(2)}</span></div>
-                    <button onclick="cart.splice(${idx}, 1); updateCartUI();" class="text-rose-400">Eliminar</button>
-                </div>`;
-            }).join('');
-
-            document.getElementById('cart-total-usd').innerText = `$${totalUSD.toFixed(2)}`;
-            document.getElementById('cart-total-ves').innerText = `Bs. ${(totalUSD * BCV_RATE).toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
-        }
-
-        function checkoutWhatsApp() {
-            if(cart.length === 0) return;
-            let total = cart.reduce((s, i) => s + i.priceUSD, 0);
-            let msg = `Hola Phantom Club, quiero pedir:\n` + cart.map(i => `- ${i.name} ($${i.priceUSD})`).join('\n') + `\nTotal: $${total.toFixed(2)}`;
-            window.open(`https://wa.me/584128705612?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        document.addEventListener('DOMContentLoaded', initStore);
-    </script>
-</body>
-</html>
