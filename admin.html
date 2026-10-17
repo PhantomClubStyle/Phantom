@@ -14,7 +14,7 @@
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen flex flex-col">
 
-    <!-- Pantalla de Login con Contraseña -->
+    <!-- Pantalla de Login -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
         <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-2xl text-center">
             <h2 class="text-xl font-black text-white mb-1">Acceso Admin</h2>
@@ -43,10 +43,10 @@
 
     <script>
         // =========================================================================
-        // CONFIGURACIÓN OBLIGATORIA (Rellena estas 2 comillas antes de guardar)
+        // CONFIGURACIÓN DE TU TIENDA
         // =========================================================================
-        const ADMIN_PASSWORD = "loginmp3rodrigo"; // <-- Pon tu contraseña aquí
-        const GITHUB_TOKEN = "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";     // <-- Pon tu token nuevo aquí
+        const ADMIN_PASSWORD = "loginmp3rodrigo";
+        const GITHUB_TOKEN = "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";
         const REPO_OWNER = "PhantomClubStyle";
         const REPO_NAME = "Phantom";
         // =========================================================================
@@ -68,7 +68,8 @@
 
         async function loadAdminProducts() {
             try {
-                const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`, {
+                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`;
+                const res = await fetch(url, {
                     headers: { 
                         "Authorization": `Bearer ${GITHUB_TOKEN}`,
                         "Accept": "application/vnd.github.v3+json"
@@ -77,12 +78,13 @@
                 
                 if (!res.ok) {
                     const errData = await res.json();
-                    throw new Error(errData.message || 'Error de conexión');
+                    throw new Error(errData.message || `Error status: ${res.status}`);
                 }
 
                 const data = await res.json();
                 fileSha = data.sha;
                 
+                // Decodificar Base64 respetando UTF-8
                 const binaryString = atob(data.content.replace(/\n/g, ''));
                 const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
                 const jsonText = new TextDecoder().decode(bytes);
@@ -90,7 +92,7 @@
                 PRODUCTS = JSON.parse(jsonText);
                 renderList();
             } catch (err) {
-                alert('Error al conectar con GitHub: ' + err.message + '\n\nRevisa que el token en GITHUB_TOKEN sea válido y tenga permisos "repo".');
+                alert('Error al conectar con GitHub: ' + err.message + '\n\nSi el token fue anulado por la seguridad de GitHub, deberás generar uno nuevo e ignorar el aviso.');
             }
         }
 
@@ -179,7 +181,7 @@
 
                 if (putRes.ok) {
                     fileSha = resData.content.sha;
-                    alert('¡Cambios guardados con éxito en GitHub! Se verán en la tienda en unos segundos.');
+                    alert('¡Cambios guardados con éxito en GitHub! Se reflejarán en la tienda en unos segundos.');
                 } else {
                     throw new Error(resData.message || 'Error al guardar');
                 }
