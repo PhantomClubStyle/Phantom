@@ -25,31 +25,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .product-card { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        /* Efecto Glassmorphism */
         .glass { background: rgba(18, 18, 24, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
 <body class="antialiased pb-28 selection:bg-purple-600 selection:text-white">
-
-    <!-- MODAL FLOTANTE DE BIENVENIDA / DETALLES -->
-    <div id="welcome-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 transition-all duration-300">
-        <div class="glass w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-purple-500/30 transform transition-all scale-100 space-y-4">
-            <div class="flex items-center justify-between">
-                <span class="bg-purple-500/20 text-purple-400 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest border border-purple-500/30">Anuncio Oficial</span>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div>
-                <h3 class="text-lg font-extrabold text-white mb-1">¡Bienvenido a PhantomClub! 🔥</h3>
-                <p class="text-xs text-gray-400 leading-relaxed">Puedes personalizar este mensaje con detalles de envíos, métodos de pago o información importante del drop actual:</p>
-            </div>
-            <!-- Campo editable para detalles -->
-            <textarea id="modal-details-input" rows="3" class="w-full bg-black/50 border border-white/10 rounded-2xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition resize-none">📦 Envíos nacionales cobro destino a todo el país. 🇻🇪 Tasa BCV actualizada automáticamente todos los días. ¡Coordina tu pedido directo al WhatsApp!</textarea>
-            
-            <button onclick="closeModal()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs rounded-2xl shadow-lg shadow-purple-900/30 transition active:scale-95 flex items-center justify-center gap-2">
-                Explorar Catálogo <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
 
     <!-- HEADER / NAVEGACIÓN MÓVIL -->
     <header class="sticky top-0 z-40 glass border-b border-white/10 px-4 py-3.5 flex items-center justify-between">
@@ -89,88 +68,15 @@
         </div>
     </section>
 
-    <!-- BOTONES DE CATEGORÍAS (CON ICONOS PERSONALIZADOS DE GORRA Y CROCS) -->
+    <!-- BOTONES DE CATEGORÍAS CON DISEÑOS DE GORRA Y CROCS MUY CURRADOS -->
     <section class="px-4 py-2">
-        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 pt-1">
-            <button onclick="setCategory('all')" class="cat-btn active flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
-                <i class="fa-solid fa-fire text-purple-400"></i> Todo
+        <div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-2 pt-1">
+            <!-- Botón Todo -->
+            <button onclick="setCategory('all')" class="cat-btn active flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
+                <i class="fa-solid fa-fire text-purple-400 text-sm"></i> Todo
             </button>
-            <button onclick="setCategory('gorras')" class="cat-btn flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
-                <!-- Icono de Gorra SVG -->
-                <svg class="w-4 h-4 text-purple-400 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.63 3.34 1.68 4.59L5.5 18h13l-1.18-4.41C18.37 12.34 19 10.74 19 9c0-3.87-3.13-7-7-7zm0 2c2.76 0 5 2.24 5 5s-2.24 5-5 5-5-2.24-5-5 2.24-5 5-5zm-7 15v2h14v-2H5z"/></svg>
-                Gorras
-            </button>
-            <button onclick="setCategory('crocs')" class="cat-btn flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95">
-                <!-- Icono de Crocs SVG -->
-                <svg class="w-4 h-4 text-purple-400 fill-current" viewBox="0 0 24 24"><path d="M19 13.5C19 16 16.5 19 12 19s-7-3-7-5.5C5 11 7 8 9 7h6c2 0 4 4 4 6.5zM7.5 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3-1a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm3 1a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
-                Crocs
-            </button>
-            <button onclick="setCategory('oferta')" class="cat-btn flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-emerald-400">
-                <i class="fa-solid fa-tags"></i> Ofertas
-            </button>
-            <button onclick="setCategory('exclusivo')" class="cat-btn flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-amber-400">
-                <i class="fa-solid fa-crown"></i> Exclusivos
-            </button>
-            <button onclick="setCategory('proximamente')" class="cat-btn flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 text-blue-400">
-                <i class="fa-solid fa-clock"></i> Próximamente
-            </button>
-        </div>
-    </section>
-
-    <!-- GRID DE PRODUCTOS -->
-    <main class="px-4 py-3">
-        <div id="products-grid" class="grid grid-cols-2 gap-3"></div>
-    </main>
-
-    <!-- CARRITO DE COMPRAS / PANEL LATERAL MÓVIL -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleCart()"></div>
-    
-    <div id="cart-drawer" class="fixed bottom-0 left-0 right-0 max-h-[85vh] glass border-t border-white/15 rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 flex flex-col shadow-2xl">
-        <div class="p-4 border-b border-white/10 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-bag-shopping text-purple-400"></i>
-                <h2 class="font-bold text-sm text-white">Tu Bolsa Phantom</h2>
-            </div>
-            <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div id="cart-items" class="p-4 overflow-y-auto flex-1 space-y-3 max-h-[35vh]"></div>
-
-        <div class="p-4 border-t border-white/10 bg-black/40 space-y-3">
-            <div class="space-y-1 text-xs">
-                <div class="flex justify-between text-gray-400">
-                    <span>Total en Dólares:</span>
-                    <span id="cart-total-usd" class="font-bold text-white">$0.00</span>
-                </div>
-                <div class="flex justify-between text-gray-400">
-                    <span>Total Estimado (BCV):</span>
-                    <span id="cart-total-ves" class="font-bold text-emerald-400">Bs. 0.00</span>
-                </div>
-            </div>
-
-            <div class="space-y-2 pt-1">
-                <input type="text" id="client-name" placeholder="Tu Nombre y Apellido" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
-                <input type="text" id="client-city" placeholder="Ciudad / Estado de envío" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
-            </div>
-
-            <button onclick="checkoutWhatsApp()" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 transition active:scale-95">
-                <i class="fa-brands fa-whatsapp text-base"></i> Enviar Pedido por WhatsApp
-            </button>
-        </div>
-    </div>
-
-    <!-- SCRIPT DE FUNCIONALIDAD -->
-    <script>
-        const WHATSAPP_NUMBER = "584121234567"; // Cambia por tu número de WhatsApp
-
-        let products = [
-            { id: 1, name: "Gorra Phantom Snapback Black", category: "gorras", priceUsd: 25.00, tag: "exclusivo", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=500&q=80" },
-            { id: 2, name: "Crocs Classic Platform Clog", category: "crocs", priceUsd: 45.00, tag: "oferta", image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=500&q=80" },
-            { id: 3, name: "Gorra Trucker Cyberpunk Edition", category: "gorras", priceUsd: 22.00, tag: "oferta", image: "https://images.unsplash.com/photo-1534215488177-c914c62b6cf8?auto=format&fit=crop&w=500&q=80" },
-            { id: 4, name: "Crocs Echo Clog Limited", category: "crocs", priceUsd: 65.00, tag: "exclusivo", image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&w=500&q=80" },
-            { id: 5, name: "Gorra Gold Edition Drop II", category: "proximamente", priceUsd: 28.00, tag: "proximamente", image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=500&q=80" }
-        ];
-
-        let currentCategory = 'all';
+            
+            <!-- Botón Gorras (Silueta Vectorial de Gorra Ajustada y Detallada) -->
+            <button onclick="setCategory('gorras')" class="cat-btn flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-semibold whitespace-nowrap transition active:scale-95 group">
+                <svg class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round
+                    
