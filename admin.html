@@ -14,17 +14,17 @@
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen flex flex-col">
 
-    <!-- Pantalla de Login con Contraseña Normal -->
+    <!-- Pantalla de Login con Contraseña -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
         <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-2xl text-center">
             <h2 class="text-xl font-black text-white mb-1">Acceso Admin</h2>
-            <p class="text-xs text-phantom-400 mb-6">loginmp3rodrigo</p>
+            <p class="text-xs text-phantom-400 mb-6">Ingresa tu contraseña para administrar la tienda</p>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="password" id="admin-pass" placeholder="Contraseña" required
                     class="w-full bg-phantom-900 text-sm text-white placeholder-phantom-500 px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 text-center">
                 <button type="submit" class="w-full py-3 rounded-xl bg-white text-black font-extrabold hover:bg-phantom-200 transition-all shadow-lg">Entrar</button>
             </form>
-            <a href="index.html" class="inline-block mt-6 text-xs text-phantom-400 hover:text-white">← Volver a la Tienda</a>
+            <a href="https://phantomclubstyle.github.io/Phantom/" class="inline-block mt-6 text-xs text-phantom-400 hover:text-white">← Volver a la Tienda</a>
         </div>
     </div>
 
@@ -33,29 +33,30 @@
         <div class="flex items-center justify-between pb-6 border-b border-white/10 mb-8">
             <h1 class="text-xl font-black text-white tracking-wide">PHANTOM ADMIN</h1>
             <div class="flex items-center gap-3">
-                <button onclick="saveAllToGitHub()" id="save-btn" class="px-5 py-2.5 rounded-xl bg-white text-black text-xs font-black hover:bg-phantom-200 transition-all shadow-lg">Guardar Cambios Globales</button>
+                <button onclick="saveAllToGitHub()" id="save-btn" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-black text-xs font-black hover:bg-emerald-400 transition-all shadow-lg">Guardar Cambios Globales</button>
                 <button onclick="addNewProduct()" class="px-4 py-2.5 rounded-xl bg-phantom-900 border border-white/10 text-white text-xs font-extrabold">+ Nuevo</button>
-                <a href="index.html" target="_blank" class="px-4 py-2.5 rounded-xl bg-phantom-900 border border-white/10 text-xs font-semibold text-white">Ver Tienda ↗</a>
+                <a href="https://phantomclubstyle.github.io/Phantom/" target="_blank" class="px-4 py-2.5 rounded-xl bg-phantom-900 border border-white/10 text-xs font-semibold text-white">Ver Tienda ↗</a>
             </div>
         </div>
         <div id="admin-products-list" class="space-y-4"></div>
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DE ACCESO Y GITHUB
-        // ==========================================
-        const ADMIN_PASSWORD = "loginmp3rodrigo"; // <-- CAMBIA AQUÍ TU CONTRASEÑA
-        const GITHUB_TOKEN = "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"; // <-- PEGA TU TOKEN AQUÍ UNA SOLA VEZ
-        const REPO_OWNER = "PhantomClubStyle"; // <-- TU USUARIO
-        const REPO_NAME = "Phantom"; // <-- TU REPOSITORIO
-        // ==========================================
+        // =========================================================================
+        // CONFIGURACIÓN OBLIGATORIA (Rellena estas 2 comillas antes de guardar)
+        // =========================================================================
+        const ADMIN_PASSWORD = "loginmp3rodrigo"; // <-- Pon tu contraseña aquí
+        const GITHUB_TOKEN = "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";     // <-- Pon tu token nuevo aquí
+        const REPO_OWNER = "phantomclubstyle";
+        const REPO_NAME = "Phantom";
+        // =========================================================================
 
         let PRODUCTS = [];
+        let fileSha = "";
 
         function handleLogin(e) {
             e.preventDefault();
-            const pass = document.getElementById('admin-pass').value;
+            const pass = document.getElementById('admin-pass').value.trim();
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
@@ -68,13 +69,28 @@
         async function loadAdminProducts() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`, {
-                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                    headers: { 
+                        "Authorization": `Bearer ${GITHUB_TOKEN}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
                 });
+                
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || 'Error de conexión');
+                }
+
                 const data = await res.json();
-                PRODUCTS = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                fileSha = data.sha;
+                
+                const binaryString = atob(data.content.replace(/\n/g, ''));
+                const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+                const jsonText = new TextDecoder().decode(bytes);
+                
+                PRODUCTS = JSON.parse(jsonText);
                 renderList();
             } catch (err) {
-                alert('Error al conectar con GitHub. Revisa tus datos en el código.');
+                alert('Error al conectar con GitHub: ' + err.message + '\n\nRevisa que el token en GITHUB_TOKEN sea válido y tenga permisos "repo".');
             }
         }
 
@@ -84,10 +100,10 @@
                 <div class="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
                     <div class="flex items-center gap-4 w-full md:w-auto flex-1">
                         <div class="w-full">
-                            <label class="block text-[10px] text-phantom-400">Nombre</label>
+                            <label class="block text-[10px] text-phantom-400 mb-1">Nombre del Producto</label>
                             <input type="text" id="name-${idx}" value="${p.name}" class="bg-phantom-900 text-sm font-bold text-white px-3 py-1.5 rounded-lg border border-white/10 w-full mb-2">
-                            <label class="block text-[10px] text-phantom-400">Enlace de Video o Foto (URL)</label>
-                            <input type="text" id="video-${idx}" value="${p.videoUrl}" class="bg-phantom-900 text-xs text-phantom-300 px-3 py-1 rounded-lg border border-white/10 w-full">
+                            <label class="block text-[10px] text-phantom-400 mb-1">URL de Video o Imagen</label>
+                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="bg-phantom-900 text-xs text-phantom-300 px-3 py-1 rounded-lg border border-white/10 w-full">
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
@@ -125,8 +141,9 @@
         async function saveAllToGitHub() {
             PRODUCTS.forEach((p, idx) => {
                 p.name = document.getElementById(`name-${idx}`).value;
-                p.videoUrl = document.getElementById(`video-${idx}`).value;
-                p.imageUrl = document.getElementById(`video-${idx}`).value;
+                const urlVal = document.getElementById(`video-${idx}`).value;
+                p.videoUrl = urlVal;
+                p.imageUrl = urlVal;
                 p.priceUSD = parseFloat(document.getElementById(`price-${idx}`).value);
                 p.stock = parseInt(document.getElementById(`stock-${idx}`).value);
                 p.category = document.getElementById(`cat-${idx}`).value;
@@ -139,29 +156,35 @@
             btn.innerText = "Guardando en GitHub...";
 
             try {
-                const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`, {
-                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
-                });
-                const fileData = await getRes.json();
+                const jsonString = JSON.stringify(PRODUCTS, null, 4);
+                const bytes = new TextEncoder().encode(jsonString);
+                const binaryString = Array.from(bytes, byte => String.fromCharCode(byte)).join('');
+                const contentEncoded = btoa(binaryString);
 
-                const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(PRODUCTS, null, 4))));
                 const putRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`, {
                     method: 'PUT',
                     headers: {
-                        "Authorization": `token ${GITHUB_TOKEN}`,
-                        "Content-Type": "application/json"
+                        "Authorization": `Bearer ${GITHUB_TOKEN}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/vnd.github.v3+json"
                     },
                     body: JSON.stringify({
-                        message: "Actualización desde Phantom Admin",
+                        message: "Actualización de catálogo desde Phantom Admin",
                         content: contentEncoded,
-                        sha: fileData.sha
+                        sha: fileSha
                     })
                 });
 
-                if(putRes.ok) alert('¡Actualizado con éxito! Los cambios ya se ven en toda la tienda.');
-                else throw new Error();
+                const resData = await putRes.json();
+
+                if (putRes.ok) {
+                    fileSha = resData.content.sha;
+                    alert('¡Cambios guardados con éxito en GitHub! Se verán en la tienda en unos segundos.');
+                } else {
+                    throw new Error(resData.message || 'Error al guardar');
+                }
             } catch (err) {
-                alert('Error al guardar en GitHub.');
+                alert('Hubo un error al guardar en GitHub: ' + err.message);
             }
             btn.innerText = "Guardar Cambios Globales";
         }
@@ -170,7 +193,7 @@
             const newId = PRODUCTS.length > 0 ? Math.max(...PRODUCTS.map(p => p.id)) + 1 : 1;
             PRODUCTS.push({
                 id: newId,
-                name: "Nuevo Artículo",
+                name: "Nuevo Artículo Phantom",
                 category: "gorras",
                 subfilter: "todas",
                 priceUSD: 30.00,
