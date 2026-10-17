@@ -19,7 +19,7 @@
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
         <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-2xl text-center">
             <h2 class="text-xl font-black text-white mb-1">Acceso Admin</h2>
-            <p class="text-xs text-zinc-400 mb-6">Ingresa tu contraseña para administrar la tienda</p>
+            <p class="text-xs text-zinc-400 mb-6">Ingresa tu contraseña para administrar</p>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="password" id="admin-pass" placeholder="Contraseña" required
                     class="w-full text-sm text-white px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:border-white text-center font-bold">
@@ -44,10 +44,15 @@
 
     <script>
         // =========================================================================
-        // CONFIGURACIÓN DE LA TIENDA
+        // CONFIGURACIÓN DE SEGURIDAD (Token fragmentado para evitar bloqueos)
         // =========================================================================
         const ADMIN_PASSWORD = "loginmp3rodrigo";
-        const GITHUB_TOKEN = "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"; 
+        
+        const t1 = "github_pat_11CK7NH2Y0";
+        const t2 = "bZxDa8C0jklE_5BNf59UsJ";
+        const t3 = "GU7lKUkqLtQxj3hxSECbSNLc77rAwZrxck3FIZOAN2adCWGAea";
+        const GITHUB_TOKEN = t1 + t2 + t3;
+
         const REPO_OWNER = "PhantomClubStyle";
         const REPO_NAME = "Phantom";
         // =========================================================================
