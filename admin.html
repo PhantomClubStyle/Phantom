@@ -10,11 +10,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
         .glass-panel { background: rgba(18, 18, 21, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); }
-        /* Estilos explícitos para asegurar visibilidad al escribir */
-        input, select {
-            color: #ffffff !important;
-            background-color: #18181b !important;
-        }
+        input, select { color: #ffffff !important; background-color: #18181b !important; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col">
@@ -26,7 +22,7 @@
             <p class="text-xs text-zinc-400 mb-6">Ingresa tu contraseña para administrar la tienda</p>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="password" id="admin-pass" placeholder="Contraseña" required
-                    class="w-full text-sm text-white placeholder-zinc-500 px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:border-white text-center font-bold">
+                    class="w-full text-sm text-white px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:border-white text-center font-bold">
                 <button type="submit" class="w-full py-3 rounded-xl bg-white text-black font-extrabold hover:bg-zinc-200 transition-all shadow-lg">Entrar</button>
             </form>
             <a href="https://phantomclubstyle.github.io/Phantom/" class="inline-block mt-6 text-xs text-zinc-400 hover:text-white">← Volver a la Tienda</a>
@@ -48,10 +44,10 @@
 
     <script>
         // =========================================================================
-        // CONFIGURACIÓN DE TU TIENDA
+        // CONFIGURACIÓN DE LA TIENDA
         // =========================================================================
         const ADMIN_PASSWORD = "loginmp3rodrigo";
-        const GITHUB_TOKEN = "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";
+        const GITHUB_TOKEN = "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"; 
         const REPO_OWNER = "PhantomClubStyle";
         const REPO_NAME = "Phantom";
         // =========================================================================
@@ -96,7 +92,7 @@
                 PRODUCTS = JSON.parse(jsonText);
                 renderList();
             } catch (err) {
-                alert('Error al conectar con GitHub: ' + err.message + '\n\nSi te sale el aviso de Secret Scanning en GitHub, recuerda seleccionar la opción de omitir el riesgo ("The secret poses no risk").');
+                alert('Error al conectar con GitHub: ' + err.message);
             }
         }
 
@@ -107,23 +103,23 @@
                     <div class="flex items-center gap-4 w-full md:w-auto flex-1">
                         <div class="w-full">
                             <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Producto</label>
-                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full mb-2 focus:border-white">
+                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full mb-2">
                             <label class="block text-[10px] text-zinc-400 mb-1">URL de Video o Imagen</label>
-                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="text-xs text-white px-3 py-1.5 rounded-lg border border-white/20 w-full focus:border-white">
+                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="text-xs text-white px-3 py-1.5 rounded-lg border border-white/20 w-full">
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Precio ($)</label>
-                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-28 text-center focus:border-white">
+                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-28 text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Stock</label>
-                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-24 text-center focus:border-white">
+                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-24 text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Categoría</label>
-                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 focus:border-white">
+                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20">
                                 <option value="gorras" ${p.category==='gorras'?'selected':''}>Gorras</option>
                                 <option value="crocs" ${p.category==='crocs'?'selected':''}>Crocs</option>
                                 <option value="proximamente" ${p.category==='proximamente'?'selected':''}>Próximamente</option>
@@ -131,7 +127,7 @@
                         </div>
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Estado</label>
-                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 focus:border-white">
+                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20">
                                 <option value="exclusivas" ${p.subfilter==='exclusivas'?'selected':''}>Exclusiva</option>
                                 <option value="ofertas" ${p.subfilter==='ofertas'?'selected':''}>Oferta</option>
                                 <option value="todas" ${p.subfilter==='todas'?'selected':''}>Normal</option>
@@ -185,12 +181,12 @@
 
                 if (putRes.ok) {
                     fileSha = resData.content.sha;
-                    alert('¡Cambios guardados con éxito en GitHub! Se verán en la tienda en unos segundos.');
+                    alert('¡Cambios guardados con éxito en GitHub!');
                 } else {
                     throw new Error(resData.message || 'Error al guardar');
                 }
             } catch (err) {
-                alert('Hubo un error al guardar en GitHub: ' + err.message);
+                alert('Error al guardar: ' + err.message);
             }
             btn.innerText = "Guardar Cambios Globales";
         }
