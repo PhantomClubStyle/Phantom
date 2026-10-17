@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Gorra Phantom Steel Edition",
+        "category": "gorras",
+        "subfilter": "exclusivas",
+        "priceUSD": 35.00,
+        "badge": "Exclusiva",
+        "badgeColor": "bg-white/10 text-white border-white/30",
+        "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
+        "imageUrl": "https://placehold.co/600x600/18181b/ffffff?text=Gorra+Steel",
+        "description": "Gorra trucker de alta gama con bordado 3D en relieve plateado.",
+        "sizes": ["Única"],
+        "stock": 8,
+        "specs": ["100% Algodón Premium", "Bordado alta densidad"]
+    },
+    {
+        "id": 2,
+        "name": "Crocs Phantom Stealth Wave",
+        "category": "crocs",
+        "subfilter": "exclusivas",
+        "priceUSD": 65.00,
+        "badge": "Exclusiva",
+        "badgeColor": "bg-white/10 text-white border-white/30",
+        "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
+        "imageUrl": "https://placehold.co/600x600/18181b/ffffff?text=Crocs+Stealth",
+        "description": "Edición especial modificada con detalles metálicos.",
+        "sizes": ["39-40", "41-42", "43-44"],
+        "stock": 5,
+        "specs": ["Resistente al agua", "Soporte ergonómico"]
+    }
+]
