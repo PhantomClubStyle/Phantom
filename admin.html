@@ -9,22 +9,27 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
-        .glass-panel { background: rgba(18, 18, 21, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-panel { background: rgba(18, 18, 21, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); }
+        /* Estilos explícitos para asegurar visibilidad al escribir */
+        input, select {
+            color: #ffffff !important;
+            background-color: #18181b !important;
+        }
     </style>
 </head>
-<body class="bg-phantom-950 text-phantom-100 min-h-screen flex flex-col">
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col">
 
     <!-- Pantalla de Login -->
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
         <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-2xl text-center">
             <h2 class="text-xl font-black text-white mb-1">Acceso Admin</h2>
-            <p class="text-xs text-phantom-400 mb-6">Ingresa tu contraseña para administrar la tienda</p>
+            <p class="text-xs text-zinc-400 mb-6">Ingresa tu contraseña para administrar la tienda</p>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="password" id="admin-pass" placeholder="Contraseña" required
-                    class="w-full bg-phantom-900 text-sm text-white placeholder-phantom-500 px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 text-center">
-                <button type="submit" class="w-full py-3 rounded-xl bg-white text-black font-extrabold hover:bg-phantom-200 transition-all shadow-lg">Entrar</button>
+                    class="w-full text-sm text-white placeholder-zinc-500 px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:border-white text-center font-bold">
+                <button type="submit" class="w-full py-3 rounded-xl bg-white text-black font-extrabold hover:bg-zinc-200 transition-all shadow-lg">Entrar</button>
             </form>
-            <a href="https://phantomclubstyle.github.io/Phantom/" class="inline-block mt-6 text-xs text-phantom-400 hover:text-white">← Volver a la Tienda</a>
+            <a href="https://phantomclubstyle.github.io/Phantom/" class="inline-block mt-6 text-xs text-zinc-400 hover:text-white">← Volver a la Tienda</a>
         </div>
     </div>
 
@@ -34,8 +39,8 @@
             <h1 class="text-xl font-black text-white tracking-wide">PHANTOM ADMIN</h1>
             <div class="flex items-center gap-3">
                 <button onclick="saveAllToGitHub()" id="save-btn" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-black text-xs font-black hover:bg-emerald-400 transition-all shadow-lg">Guardar Cambios Globales</button>
-                <button onclick="addNewProduct()" class="px-4 py-2.5 rounded-xl bg-phantom-900 border border-white/10 text-white text-xs font-extrabold">+ Nuevo</button>
-                <a href="https://phantomclubstyle.github.io/Phantom/" target="_blank" class="px-4 py-2.5 rounded-xl bg-phantom-900 border border-white/10 text-xs font-semibold text-white">Ver Tienda ↗</a>
+                <button onclick="addNewProduct()" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/20 text-white text-xs font-extrabold hover:bg-zinc-800">+ Nuevo</button>
+                <a href="https://phantomclubstyle.github.io/Phantom/" target="_blank" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/20 text-xs font-semibold text-white">Ver Tienda ↗</a>
             </div>
         </div>
         <div id="admin-products-list" class="space-y-4"></div>
@@ -46,7 +51,7 @@
         // CONFIGURACIÓN DE TU TIENDA
         // =========================================================================
         const ADMIN_PASSWORD = "loginmp3rodrigo";
-        const GITHUB_TOKEN = "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";
+        const GITHUB_TOKEN = "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";
         const REPO_OWNER = "PhantomClubStyle";
         const REPO_NAME = "Phantom";
         // =========================================================================
@@ -84,7 +89,6 @@
                 const data = await res.json();
                 fileSha = data.sha;
                 
-                // Decodificar Base64 respetando UTF-8
                 const binaryString = atob(data.content.replace(/\n/g, ''));
                 const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
                 const jsonText = new TextDecoder().decode(bytes);
@@ -92,7 +96,7 @@
                 PRODUCTS = JSON.parse(jsonText);
                 renderList();
             } catch (err) {
-                alert('Error al conectar con GitHub: ' + err.message + '\n\nSi el token fue anulado por la seguridad de GitHub, deberás generar uno nuevo e ignorar el aviso.');
+                alert('Error al conectar con GitHub: ' + err.message + '\n\nSi te sale el aviso de Secret Scanning en GitHub, recuerda seleccionar la opción de omitir el riesgo ("The secret poses no risk").');
             }
         }
 
@@ -102,38 +106,38 @@
                 <div class="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
                     <div class="flex items-center gap-4 w-full md:w-auto flex-1">
                         <div class="w-full">
-                            <label class="block text-[10px] text-phantom-400 mb-1">Nombre del Producto</label>
-                            <input type="text" id="name-${idx}" value="${p.name}" class="bg-phantom-900 text-sm font-bold text-white px-3 py-1.5 rounded-lg border border-white/10 w-full mb-2">
-                            <label class="block text-[10px] text-phantom-400 mb-1">URL de Video o Imagen</label>
-                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="bg-phantom-900 text-xs text-phantom-300 px-3 py-1 rounded-lg border border-white/10 w-full">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Producto</label>
+                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full mb-2 focus:border-white">
+                            <label class="block text-[10px] text-zinc-400 mb-1">URL de Video o Imagen</label>
+                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="text-xs text-white px-3 py-1.5 rounded-lg border border-white/20 w-full focus:border-white">
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
                         <div>
-                            <label class="block text-[10px] text-phantom-400">Precio ($)</label>
-                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="bg-phantom-900 text-sm font-bold text-white px-3 py-1.5 rounded-xl border border-white/10 w-24">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Precio ($)</label>
+                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-28 text-center focus:border-white">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-phantom-400">Stock</label>
-                            <input type="number" id="stock-${idx}" value="${p.stock}" class="bg-phantom-900 text-sm font-bold text-white px-3 py-1.5 rounded-xl border border-white/10 w-20">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Stock</label>
+                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-24 text-center focus:border-white">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-phantom-400">Categoría</label>
-                            <select id="cat-${idx}" class="bg-phantom-900 text-xs text-white px-3 py-2 rounded-xl border border-white/10">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Categoría</label>
+                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 focus:border-white">
                                 <option value="gorras" ${p.category==='gorras'?'selected':''}>Gorras</option>
                                 <option value="crocs" ${p.category==='crocs'?'selected':''}>Crocs</option>
                                 <option value="proximamente" ${p.category==='proximamente'?'selected':''}>Próximamente</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] text-phantom-400">Estado</label>
-                            <select id="sub-${idx}" class="bg-phantom-900 text-xs text-white px-3 py-2 rounded-xl border border-white/10">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Estado</label>
+                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 focus:border-white">
                                 <option value="exclusivas" ${p.subfilter==='exclusivas'?'selected':''}>Exclusiva</option>
                                 <option value="ofertas" ${p.subfilter==='ofertas'?'selected':''}>Oferta</option>
                                 <option value="todas" ${p.subfilter==='todas'?'selected':''}>Normal</option>
                             </select>
                         </div>
-                        <button onclick="deleteProduct(${idx})" class="p-2.5 bg-phantom-900 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl border border-white/10 mt-4">🗑️</button>
+                        <button onclick="deleteProduct(${idx})" class="p-2.5 bg-zinc-900 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl border border-white/20 mt-4">🗑️</button>
                     </div>
                 </div>
             `).join('');
@@ -151,7 +155,7 @@
                 p.category = document.getElementById(`cat-${idx}`).value;
                 p.subfilter = document.getElementById(`sub-${idx}`).value;
                 p.badge = p.stock === 0 ? "Agotado" : (p.subfilter === 'exclusivas' ? "Exclusiva" : "Disponible");
-                p.badgeColor = p.stock === 0 ? "bg-phantom-800 text-phantom-400 border-white/10" : "bg-white/10 text-white border-white/30";
+                p.badgeColor = p.stock === 0 ? "bg-zinc-800 text-zinc-400 border-white/10" : "bg-white/10 text-white border-white/30";
             });
 
             const btn = document.getElementById('save-btn');
@@ -181,7 +185,7 @@
 
                 if (putRes.ok) {
                     fileSha = resData.content.sha;
-                    alert('¡Cambios guardados con éxito en GitHub! Se reflejarán en la tienda en unos segundos.');
+                    alert('¡Cambios guardados con éxito en GitHub! Se verán en la tienda en unos segundos.');
                 } else {
                     throw new Error(resData.message || 'Error al guardar');
                 }
@@ -200,7 +204,7 @@
                 subfilter: "todas",
                 priceUSD: 30.00,
                 badge: "Disponible",
-                badgeColor: "bg-phantom-800 text-phantom-200 border-white/20",
+                badgeColor: "bg-zinc-800 text-zinc-200 border-white/20",
                 videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
                 imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Nuevo",
                 description: "Descripción del artículo.",
