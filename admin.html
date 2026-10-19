@@ -44,7 +44,7 @@
 
     <script>
         // =========================================================================
-        // CONFIGURACIÓN DE SEGURIDAD (Token fragmentado para evitar bloqueos)
+        // CONFIGURACIÓN DE SEGURIDAD (Token fragmentado)
         // =========================================================================
         const ADMIN_PASSWORD = "loginmp3rodrigo";
         
@@ -104,41 +104,50 @@
         function renderList() {
             const container = document.getElementById('admin-products-list');
             container.innerHTML = PRODUCTS.map((p, idx) => `
-                <div class="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
-                    <div class="flex items-center gap-4 w-full md:w-auto flex-1">
-                        <div class="w-full">
-                            <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Producto</label>
-                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full mb-2">
+                <div class="glass-panel p-5 rounded-2xl flex flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Producto (Ej: Reloj Phantom, Gorra...)</label>
+                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full">
+                        </div>
+                        <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">URL de Video o Imagen</label>
-                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl}" class="text-xs text-white px-3 py-1.5 rounded-lg border border-white/20 w-full">
+                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl || ''}" class="text-xs text-white px-3 py-2 rounded-lg border border-white/20 w-full">
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-center">
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Precio ($)</label>
-                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-28 text-center">
+                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Stock</label>
-                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-24 text-center">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Stock (0 = Agotado)</label>
+                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-zinc-400 mb-1">Tallas (Separadas por coma)</label>
+                            <input type="text" id="sizes-${idx}" value="${p.sizes ? p.sizes.join(', ') : 'Única'}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
                         </div>
                         <div>
                             <label class="block text-[10px] text-zinc-400 mb-1">Categoría</label>
-                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20">
+                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full">
                                 <option value="gorras" ${p.category==='gorras'?'selected':''}>Gorras</option>
                                 <option value="crocs" ${p.category==='crocs'?'selected':''}>Crocs</option>
                                 <option value="proximamente" ${p.category==='proximamente'?'selected':''}>Próximamente</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Estado</label>
-                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20">
+                            <label class="block text-[10px] text-zinc-400 mb-1">Subfiltro</label>
+                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full">
                                 <option value="exclusivas" ${p.subfilter==='exclusivas'?'selected':''}>Exclusiva</option>
                                 <option value="ofertas" ${p.subfilter==='ofertas'?'selected':''}>Oferta</option>
                                 <option value="todas" ${p.subfilter==='todas'?'selected':''}>Normal</option>
                             </select>
                         </div>
-                        <button onclick="deleteProduct(${idx})" class="p-2.5 bg-zinc-900 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl border border-white/20 mt-4">🗑️</button>
+                        <div class="flex justify-end pt-4">
+                            <button onclick="deleteProduct(${idx})" class="px-3 py-2 bg-zinc-900 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl border border-white/20 text-xs font-semibold w-full">🗑️ Eliminar</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -153,10 +162,28 @@
                 p.imageUrl = urlVal;
                 p.priceUSD = parseFloat(document.getElementById(`price-${idx}`).value);
                 p.stock = parseInt(document.getElementById(`stock-${idx}`).value);
+                
+                // Procesar tallas ingresadas separadas por comas
+                const sizesInput = document.getElementById(`sizes-${idx}`).value;
+                p.sizes = sizesInput.split(',').map(s => s.trim()).filter(Boolean);
+
                 p.category = document.getElementById(`cat-${idx}`).value;
                 p.subfilter = document.getElementById(`sub-${idx}`).value;
-                p.badge = p.stock === 0 ? "Agotado" : (p.subfilter === 'exclusivas' ? "Exclusiva" : "Disponible");
-                p.badgeColor = p.stock === 0 ? "bg-zinc-800 text-zinc-400 border-white/10" : "bg-white/10 text-white border-white/30";
+                
+                // Asignación inteligente de badges según stock o categoría
+                if (p.category === 'proximamente') {
+                    p.badge = "Próximamente";
+                    p.badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
+                } else if (p.stock === 0) {
+                    p.badge = "Agotado";
+                    p.badgeColor = "bg-zinc-800 text-zinc-400 border-white/10";
+                } else if (p.subfilter === 'exclusivas') {
+                    p.badge = "Exclusiva";
+                    p.badgeColor = "bg-white/10 text-white border-white/30";
+                } else {
+                    p.badge = "Disponible";
+                    p.badgeColor = "bg-white/10 text-white border-white/30";
+                }
             });
 
             const btn = document.getElementById('save-btn');
@@ -176,7 +203,7 @@
                         "Accept": "application/vnd.github.v3+json"
                     },
                     body: JSON.stringify({
-                        message: "Actualización de catálogo desde Phantom Admin",
+                        message: "Actualización avanzada de catálogo desde Phantom Admin",
                         content: contentEncoded,
                         sha: fileSha
                     })
@@ -200,24 +227,24 @@
             const newId = PRODUCTS.length > 0 ? Math.max(...PRODUCTS.map(p => p.id)) + 1 : 1;
             PRODUCTS.push({
                 id: newId,
-                name: "Nuevo Artículo Phantom",
-                category: "gorras",
+                name: "Nuevo Artículo (Ej. Reloj Phantom)",
+                category: "proximamente",
                 subfilter: "todas",
-                priceUSD: 30.00,
-                badge: "Disponible",
-                badgeColor: "bg-zinc-800 text-zinc-200 border-white/20",
+                priceUSD: 45.00,
+                badge: "Próximamente",
+                badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
                 videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
                 imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Nuevo",
-                description: "Descripción del artículo.",
+                description: "Próximamente disponible en Phantom Club.",
                 sizes: ["Única"],
-                stock: 10,
-                specs: ["Alta calidad"]
+                stock: 0,
+                specs: ["Edición especial"]
             });
             renderList();
         }
 
         function deleteProduct(idx) {
-            if(confirm('¿Eliminar producto?')) {
+            if(confirm('¿Eliminar este producto?')) {
                 PRODUCTS.splice(idx, 1);
                 renderList();
             }
