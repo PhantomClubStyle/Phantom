@@ -65,24 +65,26 @@
         .input-dark { background-color: rgba(9, 9, 11, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s ease; }
         .input-dark:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; }
 
-        /* Cinta diagonal de agotado */
+        /* Cinta diagonal con alto contraste y desenfoque para videos */
         .sold-out-banner {
             position: absolute;
-            top: 25px;
-            right: -35px;
+            top: 22px;
+            right: -38px;
             transform: rotate(45deg);
-            background-color: rgba(0, 0, 0, 0.85);
+            background: rgba(9, 9, 11, 0.85);
+            backdrop-filter: blur(8px);
             color: #ffffff;
             font-size: 10px;
             font-weight: 900;
-            letter-spacing: 0.15em;
-            padding: 6px 40px;
+            letter-spacing: 0.18em;
+            padding: 7px 42px;
             text-transform: uppercase;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            z-index: 20;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 25;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.1);
             pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
     </style>
 </head>
@@ -119,7 +121,6 @@
                     <span id="header-bcv-rate" class="font-bold text-white tracking-wide">Cargando...</span>
                 </div>
 
-                <!-- Botón de Carrito sin texto en móvil -->
                 <button onclick="toggleCart()" class="relative p-3 rounded-xl bg-phantom-900/80 border border-white/10 hover:border-white/30 text-white transition-all flex items-center justify-center group hover:bg-phantom-800">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-phantom-200 group-hover:scale-105 transition-transform"></i>
                     <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-white text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg transition-transform scale-0">0</span>
@@ -137,7 +138,7 @@
                     <button onclick="setCategory('todo')" class="cat-btn btn-active-style px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-md" data-category="todo">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i><span>Todo</span>
                     </button>
-                    <!-- Gorras (Nuevo Logo de Gorra Estilizado y Realista) -->
+                    <!-- Gorras -->
                     <button onclick="setCategory('gorras')" class="cat-btn btn-inactive-style px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2" data-category="gorras">
                         <svg class="w-5 h-5 solid-icon" viewBox="0 0 24 24">
                             <path d="M19 11C18.8 8.2 16.5 6.5 13.5 6C11 5.5 8 5.5 5.5 6C2.5 6.5 0.2 8.2 0 11C1.5 13 4 14 7 14.5C8 17 10.5 19 13.5 19C16.5 19 19 17 20 14.5C22.5 14 23.5 12.5 19 11ZM13.5 8C16 8 17.8 8.8 18.5 9.8C17.8 11.2 16 12 13.5 12C11 12 9.2 11.2 8.5 9.8C9.2 8.8 11 8 13.5 8ZM8.8 14C9.5 15.5 11.2 16.8 13.5 16.8C15.8 16.8 17.5 15.5 18.2 14H8.8Z" transform="translate(0.5, 1)"/>
@@ -266,7 +267,7 @@
         let BCV_RATE = 881.07;
         let PRODUCTS = [];
         let STORE_CONFIG = { 
-            whatsappNumber: "584128705612", 
+            whatsappNumber: "584228705614", 
             whatsappMessage: "¡Hola! Phantom Club Store 🦇⚡\nMe gustaría confirmar mi pedido:\n\n",
             preorderMessage: "¡Hola! Phantom Club Store 🦇⚡\nMe interesa realizar una PREORDEN / RESERVA para el producto próximo:\n\n"
         };
@@ -444,14 +445,11 @@
                             </video>
                             <div class="absolute inset-0 bg-gradient-to-t from-phantom-950 via-transparent to-transparent opacity-80"></div>
                             
-                            <!-- Cinta diagonal de Agotado -->
+                            <!-- Cinta diagonal de Agotado con contraste y blur -->
                             ${isSoldOut ? '<div class="sold-out-banner">AGOTADO</div>' : ''}
 
                             <div class="absolute top-4 left-4">
                                 <span class="px-3 py-1 rounded-full text-[11px] font-bold border backdrop-blur-md shadow-md ${p.badgeColor}">${p.badge}</span>
-                            </div>
-                            <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-semibold text-phantom-300 border border-white/10">
-                                ${isComingSoon ? 'Preventa' : (p.stock > 0 ? `${p.stock} disp.` : 'Agotado')}
                             </div>
                         </div>
 
@@ -462,15 +460,19 @@
                                 <p class="text-xs text-phantom-400 line-clamp-2 mb-4 leading-relaxed">${p.description}</p>
                             </div>
 
-                            <div class="pt-4 border-t border-white/10 flex items-end justify-between">
+                            <div class="pt-4 border-t border-white/10 flex items-end justify-between gap-2">
                                 <div>
                                     <div class="text-2xl font-black text-white leading-none">$${p.priceUSD.toFixed(2)}</div>
                                     <div class="text-xs text-phantom-400 font-medium mt-1">Bs. ${priceVES}</div>
                                 </div>
-                                <button onclick="openModal(${p.id})" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all flex items-center gap-1.5 border border-white/15 shadow-sm">
-                                    <i data-lucide="${isComingSoon ? 'bell' : 'eye'}" class="w-3.5 h-3.5"></i>
-                                    <span>${isComingSoon ? 'Preordenar' : 'Ver Detalle'}</span>
-                                </button>
+                                ${isSoldOut ? `
+                                    <span class="px-3 py-2 rounded-xl bg-phantom-800 text-phantom-400 text-xs font-bold border border-white/5 uppercase tracking-wider shrink-0">Agotado</span>
+                                ` : `
+                                    <button onclick="openModal(${p.id})" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all flex items-center gap-1.5 border border-white/15 shadow-sm shrink-0">
+                                        <i data-lucide="${isComingSoon ? 'bell' : 'eye'}" class="w-3.5 h-3.5"></i>
+                                        <span>${isComingSoon ? 'Preordenar' : 'Ver Detalle'}</span>
+                                    </button>
+                                `}
                             </div>
                         </div>
                     </div>
