@@ -41,15 +41,16 @@
         .glass-panel { background: rgba(18, 18, 21, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glow-white { box-shadow: 0 0 25px -5px rgba(255, 255, 255, 0.12); }
         
-        /* Animaciones fluidas, ligeras y profesionales */
         @keyframes quickFade {
             0% { opacity: 0; transform: translateY(8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: quickFade 0.3s ease-out forwards; }
-        
         .product-card { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; will-change: transform; }
         .product-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.25); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.7); }
+        
+        /* Ocultar categorías por defecto antes de que carguen para evitar parpadeos */
+        .cat-hidden { display: none !important; }
     </style>
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen flex flex-col selection:bg-white selection:text-black">
@@ -102,19 +103,19 @@
                     <button onclick="setCategory('todo')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 bg-white text-black shadow-md" data-category="todo">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i><span>Todo</span>
                     </button>
-                    <!-- Silueta 2D Perfecta y Realista de Gorra -->
+                    <!-- Nuevo Logo de Gorra 2D de Lado (Estilo Unicolor / Gris Crocs) -->
                     <button onclick="setCategory('gorras')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5" data-category="gorras">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C8.5 2 5.5 4 4.5 7C3 7.5 2 9 2 11C2 13.2 3.8 15 6 15H8C8.8 18.2 11.5 20.5 15 20.5C19.1 20.5 22 17.6 22 13.5C22 9.9 19.5 7 16 7C15.3 7 14.6 7.2 14 7.5C13.2 4.3 12.8 2 12 2ZM12 4.2C12.7 6.5 13.1 8.8 13.4 10.8C12.7 10.5 11.9 10.3 11 10.3C8.6 10.3 6.3 11.4 4.7 13.3C4.3 12.6 4.1 11.8 4.2 11C4.8 9 7 7.2 12 6.8V4.2Z"/>
+                            <path d="M2.5 14C2.5 14 3 11 6 9.5C9 8 13.5 7.8 17 8.5C19.5 9 21 11 21.5 12.5C21.7 13.2 21.5 14 20.8 14H19.5C19.5 14 18.5 10.5 12 10.5C5.5 10.5 4.5 14 4.5 14H2.5ZM3.5 15.5C3.5 15.5 5 15 12 15C19 15 20.5 15.5 20.5 15.5C21.3 15.5 22 16.2 22 17C22 17.8 21.3 18.5 20.5 18.5H3.5C2.7 18.5 2 17.8 2 17C2 16.2 2.7 15.5 3.5 15.5ZM12 6.5C12.8 6.5 13.5 5.8 13.5 5C13.5 4.2 12.8 3.5 12 3.5C11.2 3.5 10.5 4.2 10.5 5C10.5 5.8 11.2 6.5 12 6.5Z"/>
                         </svg><span>Gorras</span>
                     </button>
-                    <button onclick="setCategory('crocs')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5" data-category="crocs">
+                    <button onclick="setCategory('crocs')" class="cat-btn cat-hidden px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5" data-category="crocs">
                         <svg class="w-5 h-4" viewBox="0 0 240 130" fill="currentColor">
                             <path d="M 215 35 C 190 35 185 55 160 55 C 135 55 130 35 105 35 C 70 35 30 50 15 80 C 5 95 10 115 35 120 C 80 125 150 125 190 110 C 215 100 230 75 225 55 C 223 45 220 35 215 35 Z"/>
                             <circle cx="70" cy="65" r="12" fill="#18181b"/><circle cx="105" cy="65" r="12" fill="#18181b"/><circle cx="190" cy="75" r="9" fill="#18181b"/><circle cx="210" cy="75" r="9" fill="#18181b"/>
                         </svg><span>Crocs</span>
                     </button>
-                    <button onclick="setCategory('proximamente')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5" data-category="proximamente">
+                    <button onclick="setCategory('proximamente')" class="cat-btn cat-hidden px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5" data-category="proximamente">
                         <i data-lucide="clock" class="w-4 h-4"></i><span>Próximamente</span>
                     </button>
                 </div>
@@ -251,12 +252,12 @@
                 if (cat === 'todo') return;
                 
                 if (VISIBILITY[cat] === false) {
-                    btn.style.display = 'none';
+                    btn.classList.add('cat-hidden');
                     if (currentCategory === cat) {
                         setCategory('todo');
                     }
                 } else {
-                    btn.style.display = 'flex';
+                    btn.classList.remove('cat-hidden');
                 }
             });
         }
