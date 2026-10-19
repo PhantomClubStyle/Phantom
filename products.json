@@ -1,225 +1,230 @@
 {
-    "visibility": {
-        "gorras": true,
-        "crocs": false,
-        "proximamente": true
+  "visibility": {
+    "gorras": true,
+    "crocs": false,
+    "proximamente": true
+  },
+  "config": {
+    "whatsappNumber": "584228705614",
+    "whatsappMessage": "¡Hola! Phantom Club Store 🦇⚡\nMe gustaría confirmar mi pedido:\n\n",
+    "preorderMessage": "¡Hola! Phantom Club Store 🦇⚡\nMe interesa realizar una PREORDEN / RESERVA para el producto próximo:\n\n"
+  },
+  "products": [
+    {
+      "id": 1,
+      "name": "Gorra Gallo pinto",
+      "category": "gorras",
+      "subfilter": "exclusivas",
+      "priceUSD": 35,
+      "badge": "Agotado",
+      "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
+      "videoUrl": "https://github.com/PhantomClubStyle/Phantom/blob/main/hbeu50572432_001_230.jfif",
+      "imageUrl": "https://github.com/PhantomClubStyle/Phantom/blob/main/hbeu50572432_001_230.jfif",
+      "description": "Gorra trucker de alta gama con bordado 3D en relieve plateado, cierre snapback ajustable y panel transpirable de máxima calidad.",
+      "sizes": [
+        "Única (Ajustable)"
+      ],
+      "stock": 11,
+      "specs": [
+        "Material: 100% Algodón Premium",
+        "Bordado de alta densidad",
+        "Edición numerada 1/100"
+      ]
     },
-    "products": [
-        {
-            "id": 1,
-            "name": "Gorra Gallo pinto",
-            "category": "gorras",
-            "subfilter": "exclusivas",
-            "priceUSD": 35,
-            "badge": "Agotado",
-            "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
-            "videoUrl": "https://github.com/PhantomClubStyle/Phantom/blob/main/hbeu50572432_001_230.jfif",
-            "imageUrl": "https://github.com/PhantomClubStyle/Phantom/blob/main/hbeu50572432_001_230.jfif",
-            "description": "Gorra trucker de alta gama con bordado 3D en relieve plateado, cierre snapback ajustable y panel transpirable de máxima calidad.",
-            "sizes": [
-                "Única (Ajustable)"
-            ],
-            "stock": 0,
-            "specs": [
-                "Material: 100% Algodón Premium",
-                "Bordado de alta densidad",
-                "Edición numerada 1/100"
-            ]
-        },
-        {
-            "id": 2,
-            "name": "Gorra Cyberpunk Monochrome",
-            "category": "gorras",
-            "subfilter": "ofertas",
-            "priceUSD": 24,
-            "oldPriceUSD": 32,
-            "badge": "Disponible",
-            "badgeColor": "bg-white/10 text-white border-white/30",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
-            "description": "Gorra estilo cyberpunk con detalles reflectantes oscuros y correa táctica ajustable. Perfecta para outfits nocturnos.",
-            "sizes": [
-                "Única (Ajustable)"
-            ],
-            "stock": 12,
-            "specs": [
-                "Detalles reflectantes 3M",
-                "Tejido repelente al agua",
-                "Cierre táctico con hebilla"
-            ]
-        },
-        {
-            "id": 3,
-            "name": "Crocs Phantom Stealth Wave",
-            "category": "crocs",
-            "subfilter": "exclusivas",
-            "priceUSD": 65,
-            "badge": "Exclusiva",
-            "badgeColor": "bg-white/10 text-white border-white/30",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
-            "description": "Edición especial modificada con tiras de alta resistencia, detalles metálicos acero y pines Jibbitz exclusivos de Phantom Club.",
-            "sizes": [
-                "39-40",
-                "41-42",
-                "43-44"
-            ],
-            "stock": 5,
-            "specs": [
-                "Resistente al agua",
-                "Soporte ergonómico acolchado",
-                "Incluye set de 4 Jibbitz metálicos"
-            ]
-        },
-        {
-            "id": 4,
-            "name": "Crocs LiteRide Obsidian",
-            "category": "crocs",
-            "subfilter": "ofertas",
-            "priceUSD": 49,
-            "oldPriceUSD": 60,
-            "badge": "Agotado",
-            "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-legs-of-a-man-walking-with-stylish-shoes-41585-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-legs-of-a-man-walking-with-stylish-shoes-41585-large.mp4",
-            "description": "Máxima comodidad con plantilla de espuma LiteRide para pisadas ultra suaves. Diseño aerodinámico en tonos negro mate.",
-            "sizes": [
-                "40-41",
-                "42-43"
-            ],
-            "stock": 0,
-            "specs": [
-                "Plantillas de espuma LiteRide",
-                "Suela antideslizante",
-                "Ultra ligeras"
-            ]
-        },
-        {
-            "id": 5,
-            "name": "Crocs Echo Clog Phantom Black",
-            "category": "crocs",
-            "subfilter": "exclusivas",
-            "priceUSD": 75,
-            "badge": "Agotado",
-            "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-walking-on-a-street-41588-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-walking-on-a-street-41588-large.mp4",
-            "description": "Diseño futurista y moldeado audaz en color negro carbón. Este modelo se encuentra temporalmente agotado.",
-            "sizes": [
-                "41",
-                "42",
-                "43"
-            ],
-            "stock": 0,
-            "specs": [
-                "Diseño escultural vanguardista",
-                "Ventilación avanzada",
-                "Correa ajustable turbo"
-            ]
-        },
-        {
-            "id": 6,
-            "name": "Gorra Phantom Minimalist Gray",
-            "category": "gorras",
-            "subfilter": "todas",
-            "priceUSD": 28,
-            "badge": "Disponible",
-            "badgeColor": "bg-white/10 text-white border-white/30",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
-            "description": "Diseño minimalista con logotipo sutil grabado en placa de acero inoxidable mate.",
-            "sizes": [
-                "Única (Ajustable)"
-            ],
-            "stock": 15,
-            "specs": [
-                "Placa de acero inoxidable",
-                "Algodón orgánico",
-                "Cinturón de ajuste oculto"
-            ]
-        },
-        {
-            "id": 7,
-            "name": "Próximamente: Phantom Stealth Jacket",
-            "category": "proximamente",
-            "subfilter": "exclusivas",
-            "priceUSD": 120,
-            "badge": "Próximamente",
-            "badgeColor": "bg-amber-500/10 text-amber-400 border-amber-500/20",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-walking-down-the-street-42170-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-walking-down-the-street-42170-large.mp4",
-            "description": "Chaqueta cortavientos impermeable con múltiples bolsillos tácticos. Lanzamiento oficial este próximo mes.",
-            "sizes": [
-                "S",
-                "M",
-                "L",
-                "XL"
-            ],
-            "stock": 25,
-            "specs": [
-                "Lanzamiento Exclusivo",
-                "Tejido cortavientos avanzado",
-                "Impermeable 10k"
-            ]
-        },
-        {
-            "id": 8,
-            "name": "Próximamente: Phantom Utility Bag",
-            "category": "proximamente",
-            "subfilter": "exclusivas",
-            "priceUSD": 55,
-            "badge": "Próximamente",
-            "badgeColor": "bg-amber-500/10 text-amber-400 border-amber-500/20",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
-            "description": "Bolso cruzado de alta resistencia con cierres impermeables y compartimento acolchado para dispositivos.",
-            "sizes": [
-                "Única"
-            ],
-            "stock": 20,
-            "specs": [
-                "Cordura balística",
-                "Cierres YKK impermeables",
-                "Diseño ergonómico"
-            ]
-        },
-        {
-            "id": 9,
-            "name": "Nuevo Artículo Phantom",
-            "category": "gorras",
-            "subfilter": "todas",
-            "priceUSD": 30,
-            "badge": "Disponible",
-            "badgeColor": "bg-white/10 text-white border-white/30",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
-            "description": "Descripción del artículo.",
-            "sizes": [
-                "Única"
-            ],
-            "stock": 10,
-            "specs": [
-                "Alta calidad"
-            ]
-        },
-        {
-            "id": 10,
-            "name": "Nuevo Artículo Phantom",
-            "category": "gorras",
-            "subfilter": "todas",
-            "priceUSD": 30,
-            "badge": "Disponible",
-            "badgeColor": "bg-white/10 text-white border-white/30",
-            "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
-            "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
-            "description": "Descripción del artículo.",
-            "sizes": [
-                "Única"
-            ],
-            "stock": 10,
-            "specs": [
-                "Alta calidad"
-            ]
-        }
-    ]
+    {
+      "id": 2,
+      "name": "Gorra Cyberpunk Monochrome",
+      "category": "gorras",
+      "subfilter": "ofertas",
+      "priceUSD": 24,
+      "oldPriceUSD": 32,
+      "badge": "Disponible",
+      "badgeColor": "bg-white/10 text-white border-white/30",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
+      "description": "Gorra estilo cyberpunk con detalles reflectantes oscuros y correa táctica ajustable. Perfecta para outfits nocturnos.",
+      "sizes": [
+        "Única (Ajustable)"
+      ],
+      "stock": 12,
+      "specs": [
+        "Detalles reflectantes 3M",
+        "Tejido repelente al agua",
+        "Cierre táctico con hebilla"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Crocs Phantom Stealth Wave",
+      "category": "crocs",
+      "subfilter": "exclusivas",
+      "priceUSD": 65,
+      "badge": "Exclusiva",
+      "badgeColor": "bg-white/10 text-white border-white/30",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
+      "description": "Edición especial modificada con tiras de alta resistencia, detalles metálicos acero y pines Jibbitz exclusivos de Phantom Club.",
+      "sizes": [
+        "39-40",
+        "41-42",
+        "43-44"
+      ],
+      "stock": 5,
+      "specs": [
+        "Resistente al agua",
+        "Soporte ergonómico acolchado",
+        "Incluye set de 4 Jibbitz metálicos"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Crocs LiteRide Obsidian",
+      "category": "crocs",
+      "subfilter": "ofertas",
+      "priceUSD": 49,
+      "oldPriceUSD": 60,
+      "badge": "Agotado",
+      "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-legs-of-a-man-walking-with-stylish-shoes-41585-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-legs-of-a-man-walking-with-stylish-shoes-41585-large.mp4",
+      "description": "Máxima comodidad con plantilla de espuma LiteRide para pisadas ultra suaves. Diseño aerodinámico en tonos negro mate.",
+      "sizes": [
+        "40-41",
+        "42-43"
+      ],
+      "stock": 0,
+      "specs": [
+        "Plantillas de espuma LiteRide",
+        "Suela antideslizante",
+        "Ultra ligeras"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Crocs Echo Clog Phantom Black",
+      "category": "crocs",
+      "subfilter": "exclusivas",
+      "priceUSD": 75,
+      "badge": "Agotado",
+      "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-walking-on-a-street-41588-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-walking-on-a-street-41588-large.mp4",
+      "description": "Diseño futurista y moldeado audaz en color negro carbón. Este modelo se encuentra temporalmente agotado.",
+      "sizes": [
+        "41",
+        "42",
+        "43"
+      ],
+      "stock": 0,
+      "specs": [
+        "Diseño escultural vanguardista",
+        "Ventilación avanzada",
+        "Correa ajustable turbo"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Gorra Phantom Minimalist Gray",
+      "category": "gorras",
+      "subfilter": "todas",
+      "priceUSD": 28,
+      "badge": "Disponible",
+      "badgeColor": "bg-white/10 text-white border-white/30",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-young-man-wearing-a-cap-looking-at-the-camera-42168-large.mp4",
+      "description": "Diseño minimalista con logotipo sutil grabado en placa de acero inoxidable mate.",
+      "sizes": [
+        "Única (Ajustable)"
+      ],
+      "stock": 15,
+      "specs": [
+        "Placa de acero inoxidable",
+        "Algodón orgánico",
+        "Cinturón de ajuste oculto"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Próximamente: Phantom Stealth Jacket",
+      "category": "proximamente",
+      "subfilter": "exclusivas",
+      "priceUSD": 120,
+      "badge": "Próximamente",
+      "badgeColor": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-walking-down-the-street-42170-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-walking-down-the-street-42170-large.mp4",
+      "description": "Chaqueta cortavientos impermeable con múltiples bolsillos tácticos. Lanzamiento oficial este próximo mes.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "stock": 25,
+      "specs": [
+        "Lanzamiento Exclusivo",
+        "Tejido cortavientos avanzado",
+        "Impermeable 10k"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Próximamente: Phantom Utility Bag",
+      "category": "proximamente",
+      "subfilter": "exclusivas",
+      "priceUSD": 55,
+      "badge": "Próximamente",
+      "badgeColor": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-feet-of-a-person-walking-with-sneakers-41586-large.mp4",
+      "description": "Bolso cruzado de alta resistencia con cierres impermeables y compartimento acolchado para dispositivos.",
+      "sizes": [
+        "Única"
+      ],
+      "stock": 20,
+      "specs": [
+        "Cordura balística",
+        "Cierres YKK impermeables",
+        "Diseño ergonómico"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Nuevo Artículo Phantom",
+      "category": "gorras",
+      "subfilter": "todas",
+      "priceUSD": 30,
+      "badge": "Disponible",
+      "badgeColor": "bg-white/10 text-white border-white/30",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
+      "description": "Descripción del artículo.",
+      "sizes": [
+        "Única"
+      ],
+      "stock": 10,
+      "specs": [
+        "Alta calidad"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Nuevo Artículo Phantom",
+      "category": "gorras",
+      "subfilter": "todas",
+      "priceUSD": 30,
+      "badge": "Disponible",
+      "badgeColor": "bg-white/10 text-white border-white/30",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
+      "imageUrl": "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
+      "description": "Descripción del artículo.",
+      "sizes": [
+        "Única"
+      ],
+      "stock": 10,
+      "specs": [
+        "Alta calidad"
+      ]
+    }
+  ]
 }
