@@ -66,10 +66,10 @@
         </div>
     </div>
 
-    <!-- Contenido del Panel -->
+    <!-- Contenido del Panel (Oculto hasta autenticarse) -->
     <div id="admin-content" class="max-w-3xl mx-auto space-y-6 hidden">
         
-        <!-- Header Principal -->
+        <!-- Header Principal Estilo Store -->
         <header class="flex items-center justify-between glass-panel p-5 sm:p-6 rounded-3xl">
             <div class="flex items-center gap-3.5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-white/20 to-phantom-900 border border-white/30 flex items-center justify-center glow-white shrink-0">
@@ -95,7 +95,7 @@
             </div>
         </header>
 
-        <!-- Configuración Global de WhatsApp -->
+        <!-- Configuración Global de WhatsApp (Guardado Independiente) -->
         <section class="glass-panel p-6 rounded-3xl space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-white/10">
                 <div class="flex items-center gap-2">
@@ -123,7 +123,7 @@
             </div>
         </section>
 
-        <!-- Visibilidad de Categorías -->
+        <!-- Visibilidad de Categorías (Guardado Independiente) -->
         <section class="glass-panel p-6 rounded-3xl space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-white/10">
                 <div class="flex items-center gap-2">
@@ -327,7 +327,7 @@
 
             container.innerHTML = DATA.products.map((p, idx) => {
                 const sizesStr = Array.isArray(p.sizes) ? p.sizes.join(', ') : (p.sizes || 'Única');
-                const subfilter = p.subfilter || 'exclusivas';
+                const subfilter = p.subfilter || 'todas';
                 return `
                     <div class="bg-phantom-900/90 p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3.5 shadow-md">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -347,8 +347,9 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-[10px] font-bold text-phantom-400 uppercase mb-1">Etiqueta / Tipo</label>
+                                <label class="block text-[10px] font-bold text-phantom-400 uppercase mb-1">Etiqueta / Estado</label>
                                 <select onchange="DATA.products[${idx}].subfilter = this.value" class="w-full input-dark text-xs p-3 rounded-xl cursor-pointer">
+                                    <option value="todas" ${subfilter === 'todas' || subfilter === 'normal' ? 'selected' : ''}>⚪ Normal (Sin estado)</option>
                                     <option value="exclusivas" ${subfilter === 'exclusivas' ? 'selected' : ''}>⭐ Exclusiva</option>
                                     <option value="ofertas" ${subfilter === 'ofertas' ? 'selected' : ''}>🔥 Oferta</option>
                                 </select>
@@ -403,12 +404,12 @@
                 id: Date.now(),
                 name: "Nuevo Producto",
                 category: "gorras",
-                subfilter: "exclusivas",
+                subfilter: "todas",
                 priceUSD: 25.0,
                 oldPriceUSD: 0,
                 stock: 10,
                 sizes: ["Única"],
-                badge: "EXCLUSIVO",
+                badge: "ESTÁNDAR",
                 description: "Descripción detallada del producto",
                 videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-caps-on-a-rack-41662-large.mp4"
             });
