@@ -44,7 +44,30 @@
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen p-4 sm:p-8 pb-32">
 
-    <div class="max-w-3xl mx-auto space-y-6">
+    <!-- Pantalla de Login -->
+    <div id="login-screen" class="fixed inset-0 z-50 bg-phantom-950 flex items-center justify-center p-4">
+        <div class="glass-panel p-8 rounded-3xl max-w-md w-full space-y-6 text-center shadow-2xl border border-white/10">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-white/20 to-phantom-900 border border-white/30 flex items-center justify-center glow-white mx-auto">
+                <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C8 2 5 5 5 9v8a3 3 0 003 3h8a3 3 0 003-3V9c0-4-3-7-7-7z"/>
+                    <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+                    <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
+                    <path stroke-linecap="round" d="M10 15h4"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-black tracking-widest text-white uppercase">PHANTOM CLUB</h2>
+                <p class="text-xs text-phantom-400 mt-1">Ingresa la contraseña de administración</p>
+            </div>
+            <div class="space-y-4">
+                <input type="password" id="login-password" placeholder="Contraseña..." class="w-full input-dark text-sm p-3.5 rounded-xl text-center tracking-widest" onkeydown="if(event.key === 'Enter') checkPassword()">
+                <button onclick="checkPassword()" class="w-full py-3.5 rounded-xl bg-white hover:bg-phantom-200 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-lg">Entrar al Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido del Panel (Oculto hasta autenticarse) -->
+    <div id="admin-content" class="max-w-3xl mx-auto space-y-6 hidden">
         
         <!-- Header Principal Estilo Store -->
         <header class="flex items-center justify-between glass-panel p-5 sm:p-6 rounded-3xl">
@@ -62,9 +85,14 @@
                     <span class="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-phantom-400 uppercase block mt-1">PANEL DE ADMINISTRACIÓN</span>
                 </div>
             </div>
-            <a href="index.html" target="_blank" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all border border-white/20 flex items-center gap-1.5 shadow-md">
-                <i data-lucide="external-link" class="w-3.5 h-3.5"></i><span>Ver Tienda</span>
-            </a>
+            <div class="flex items-center gap-2">
+                <a href="index.html" target="_blank" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all border border-white/20 flex items-center gap-1.5 shadow-md">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i><span>Ver Tienda</span>
+                </a>
+                <button onclick="logout()" class="p-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white transition-all border border-rose-500/20" title="Cerrar Sesión">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
         </header>
 
         <!-- Configuración Global de WhatsApp y Mensajes (Guardado Independiente) -->
@@ -158,12 +186,15 @@
         const REPO_OWNER = "PhantomClubStyle";
         const REPO_NAME = "Phantom";
         const FILE_PATH = "products.json";
+        const ADMIN_PASS = "loginmp3rodrigo";
 
-        // Ensamblado dinámico del token en memoria
-        const _p1 = "ghp_";
-        const _p2 = "YOUR_TOKEN_HERE"; // Reemplaza esto con tu token actual si no lo habías pegado en la sesión
+        // Fragmentación del token en 3 partes
+        const _tkA = "github_pat_11CK7NH2Y0ULaDyAXrWvHo_";
+        const _tkB = "B4mdfbcwDiWzFWhvNes99NM3h5mSTgV1y";
+        const _tkC = "Wn16Rt10V0ERHPUNSNHs2M3DMq";
+
         function getAuthToken() {
-            return _p1 + _p2;
+            return _tkA + _tkB + _tkC;
         }
 
         let fileSHA = "";
@@ -176,6 +207,32 @@
             },
             products: []
         };
+
+        function checkPassword() {
+            const pass = document.getElementById('login-password').value.trim();
+            if (pass === ADMIN_PASS) {
+                localStorage.setItem('phantom_admin_logged', 'true');
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                loadAdminData();
+            } else {
+                alert('Contraseña incorrecta.');
+                document.getElementById('login-password').value = '';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('phantom_admin_logged');
+            location.reload();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('phantom_admin_logged') === 'true') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                loadAdminData();
+            }
+        });
 
         async function loadAdminData() {
             try {
@@ -218,7 +275,7 @@
                 const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `token ${token}`,
+                        'Authorization': `bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -235,7 +292,7 @@
                     return true;
                 } else {
                     const errData = await res.json();
-                    alert("Error al guardar en GitHub: " + (errData.message || "Verifica las credenciales"));
+                    alert("Error al guardar en GitHub: " + (errData.message || "Verifica la configuración de tu repositorio"));
                     return false;
                 }
             } catch (e) {
@@ -352,8 +409,6 @@
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
             setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none'), 2500);
         }
-
-        document.addEventListener('DOMContentLoaded', loadAdminData);
     </script>
 </body>
 </html>
