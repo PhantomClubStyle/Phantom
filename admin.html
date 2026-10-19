@@ -3,289 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - PHANTOM CLUB</title>
+    <title>Admin - PHANTOM CLUB</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        phantom: {
+                            950: '#09090b',
+                            900: '#121215',
+                            800: '#18181b',
+                            700: '#27272a',
+                            600: '#3f3f46',
+                            500: '#52525b',
+                            400: '#a1a1aa',
+                            300: '#d4d4d8',
+                            200: '#e4e4e7',
+                            100: '#f4f4f5'
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
-        .glass-panel { background: rgba(18, 18, 21, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); }
-        input, select { color: #ffffff !important; background-color: #18181b !important; }
+        .glass-panel { background: rgba(18, 18, 21, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col">
+<body class="bg-phantom-950 text-phantom-100 min-h-screen p-4 sm:p-8">
 
-    <!-- Pantalla de Login -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
-        <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-2xl text-center">
-            <h2 class="text-xl font-black text-white mb-1">Acceso Admin</h2>
-            <p class="text-xs text-zinc-400 mb-6">Ingresa tu contraseña para administrar</p>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <input type="password" id="admin-pass" placeholder="Contraseña" required
-                    class="w-full text-sm text-white px-4 py-3 rounded-xl border border-white/20 focus:outline-none focus:border-white text-center font-bold">
-                <button type="submit" class="w-full py-3 rounded-xl bg-white text-black font-extrabold hover:bg-zinc-200 transition-all shadow-lg">Entrar</button>
-            </form>
-            <a href="https://phantomclubstyle.github.io/Phantom/" class="inline-block mt-6 text-xs text-zinc-400 hover:text-white">← Volver a la Tienda</a>
-        </div>
-    </div>
-
-    <!-- Panel de Administración -->
-    <div id="admin-dashboard" class="hidden flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        <div class="flex items-center justify-between pb-6 border-b border-white/10 mb-8 flex-wrap gap-4">
+    <div class="max-w-4xl mx-auto space-y-8">
+        <header class="flex items-center justify-between bg-phantom-900/60 p-6 rounded-3xl border border-white/10 backdrop-blur-xl">
             <div>
-                <h1 class="text-xl font-black text-white tracking-wide">PHANTOM ADMIN</h1>
-                <p class="text-xs text-zinc-400 mt-1">Control de catálogo y visibilidad de categorías</p>
+                <span class="text-[10px] font-black uppercase tracking-widest text-phantom-400 block mb-1">Panel de Control</span>
+                <h1 class="text-2xl font-black text-white">PHANTOM CLUB ADMIN</h1>
             </div>
-            <div class="flex items-center gap-3 flex-wrap">
-                <button onclick="saveAllToGitHub()" id="save-btn" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-black text-xs font-black hover:bg-emerald-400 transition-all shadow-lg">Guardar Cambios Globales</button>
-                <button onclick="addNewProduct()" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/20 text-white text-xs font-extrabold hover:bg-zinc-800">+ Nuevo Artículo / Próximo</button>
-                <a href="https://phantomclubstyle.github.io/Phantom/" target="_blank" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/20 text-xs font-semibold text-white">Ver Tienda ↗</a>
+            <a href="index.html" target="_blank" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all border border-white/15">Ver Tienda ⚡</a>
+        </header>
+
+        <!-- Configuración de WhatsApp y Visibilidad de Categorías -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="eye" class="w-4 h-4"></i> Visibilidad de Categorías
+                </h3>
+                <div class="space-y-3">
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-phantom-900/80 border border-white/5 cursor-pointer">
+                        <span class="text-sm font-medium">Categoría Gorras</span>
+                        <input type="checkbox" id="toggle-gorras" onchange="updateVisibility()" class="w-4 h-4 accent-white">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-phantom-900/80 border border-white/5 cursor-pointer">
+                        <span class="text-sm font-medium">Categoría Crocs</span>
+                        <input type="checkbox" id="toggle-crocs" onchange="updateVisibility()" class="w-4 h-4 accent-white">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-phantom-900/80 border border-white/5 cursor-pointer">
+                        <span class="text-sm font-medium">Categoría Próximamente</span>
+                        <input type="checkbox" id="toggle-proximamente" onchange="updateVisibility()" class="w-4 h-4 accent-white">
+                    </label>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> Configuración WhatsApp
+                </h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-phantom-400 mb-1">Número de WhatsApp (con código país):</label>
+                        <input type="text" id="whatsapp-number" placeholder="584128705612" class="w-full bg-phantom-900 text-sm text-white px-3 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-white/40">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-phantom-400 mb-1">Mensaje pred. de pedido:</label>
+                        <textarea id="whatsapp-message" rows="2" class="w-full bg-phantom-900 text-sm text-white px-3 py-2 rounded-xl border border-white/10 focus:outline-none focus:border-white/40"></textarea>
+                    </div>
+                    <button onclick="saveConfig()" class="w-full py-2.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-phantom-200 transition-all">Guardar Configuración</button>
+                </div>
             </div>
         </div>
 
-        <!-- Sección de Control de Visibilidad de Categorías -->
-        <div class="glass-panel p-5 rounded-2xl mb-8 border border-white/10">
-            <h3 class="text-xs font-black uppercase tracking-wider text-zinc-300 mb-3">Ocultar / Mostrar Categorías Completas en la Tienda</h3>
-            <div class="flex flex-wrap gap-4" id="category-toggles">
-                <label class="flex items-center gap-2 text-xs font-semibold bg-zinc-900 px-4 py-2.5 rounded-xl border border-white/10 cursor-pointer">
-                    <input type="checkbox" id="toggle-gorras" checked onchange="markDirty()" class="accent-white"> 🧢 Gorras (Visible)
-                </label>
-                <label class="flex items-center gap-2 text-xs font-semibold bg-zinc-900 px-4 py-2.5 rounded-xl border border-white/10 cursor-pointer">
-                    <input type="checkbox" id="toggle-crocs" checked onchange="markDirty()" class="accent-white"> 🐊 Crocs (Visible)
-                </label>
-                <label class="flex items-center gap-2 text-xs font-semibold bg-zinc-900 px-4 py-2.5 rounded-xl border border-white/10 cursor-pointer">
-                    <input type="checkbox" id="toggle-proximamente" checked onchange="markDirty()" class="accent-white"> 🚀 Próximamente (Visible)
-                </label>
+        <!-- Generador de Código JSON para Descargar -->
+        <div class="glass-panel p-6 rounded-3xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Gestión de Productos (`products.json`)</h3>
+                <button onclick="addProduct()" class="px-4 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-phantom-200 transition-all">+ Nuevo Producto</button>
+            </div>
+            
+            <div id="admin-products-list" class="space-y-3"></div>
+
+            <div class="pt-4 border-t border-white/15 flex gap-4">
+                <button onclick="exportJSON()" class="flex-1 py-3.5 rounded-xl bg-white hover:bg-phantom-200 text-black font-extrabold text-sm transition-all shadow-xl">
+                    📥 Descargar products.json actualizado
+                </button>
             </div>
         </div>
-
-        <div id="admin-products-list" class="space-y-4"></div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "loginmp3rodrigo";
-        
-        const t1 = "github_pat_11CK7NH2Y0";
-        const t2 = "bZxDa8C0jklE_5BNf59UsJ";
-        const t3 = "GU7lKUkqLtQxj3hxSECbSNLc77rAwZrxck3FIZOAN2adCWGAea";
-        const GITHUB_TOKEN = t1 + t2 + t3;
+        let DATA = {
+            visibility: { gorras: true, crocs: true, proximamente: true },
+            config: { whatsappNumber: "584128705612", whatsappMessage: "¡Hola! Phantom Club Store 🦇⚡\nMe gustaría confirmar mi pedido:\n\n" },
+            products: []
+        };
 
-        const REPO_OWNER = "PhantomClubStyle";
-        const REPO_NAME = "Phantom";
-
-        let PRODUCTS = [];
-        let CATEGORY_VISIBILITY = { gorras: true, crocs: true, proximamente: true };
-        let fileSha = "";
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('admin-pass').value.trim();
-            if (pass === ADMIN_PASSWORD) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                loadAdminProducts();
-            } else {
-                alert('Contraseña incorrecta');
-            }
-        }
-
-        async function loadAdminProducts() {
+        async function loadAdminData() {
             try {
-                const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`;
-                const res = await fetch(url, {
-                    headers: { 
-                        "Authorization": `Bearer ${GITHUB_TOKEN}`,
-                        "Accept": "application/vnd.github.v3+json"
+                const res = await fetch('products.json?t=' + new Date().getTime());
+                if (res.ok) {
+                    const parsed = await res.json();
+                    if (Array.isArray(parsed)) {
+                        DATA.products = parsed;
+                    } else {
+                        DATA.products = parsed.products || [];
+                        DATA.visibility = parsed.visibility || { gorras: true, crocs: true, proximamente: true };
+                        if (parsed.config) DATA.config = { ...DATA.config, ...parsed.config };
                     }
-                });
-                
-                if (!res.ok) throw new Error(`Error status: ${res.status}`);
-
-                const data = await res.json();
-                fileSha = data.sha;
-                
-                const binaryString = atob(data.content.replace(/\n/g, ''));
-                const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
-                const jsonText = new TextDecoder().decode(bytes);
-                
-                const parsed = JSON.parse(jsonText);
-                // Si el JSON viene con estructura extendida de visibilidad
-                if (Array.isArray(parsed)) {
-                    PRODUCTS = parsed;
-                } else {
-                    PRODUCTS = parsed.products || [];
-                    CATEGORY_VISIBILITY = parsed.visibility || { gorras: true, crocs: true, proximamente: true };
                 }
-
-                document.getElementById('toggle-gorras').checked = CATEGORY_VISIBILITY.gorras !== false;
-                document.getElementById('toggle-crocs').checked = CATEGORY_VISIBILITY.crocs !== false;
-                document.getElementById('toggle-proximamente').checked = CATEGORY_VISIBILITY.proximamente !== false;
-
-                renderList();
-            } catch (err) {
-                alert('Error al conectar con GitHub: ' + err.message);
+            } catch (e) {
+                DATA.products = [];
             }
-        }
-
-        function markDirty() {}
-
-        function renderList() {
-            const container = document.getElementById('admin-products-list');
-            container.innerHTML = PRODUCTS.map((p, idx) => `
-                <div class="glass-panel p-5 rounded-2xl flex flex-col gap-4 border border-white/10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Nombre del Producto</label>
-                            <input type="text" id="name-${idx}" value="${p.name}" class="text-sm font-bold text-white px-3 py-2 rounded-lg border border-white/20 w-full">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">URL de Video o Imagen</label>
-                            <input type="text" id="video-${idx}" value="${p.videoUrl || p.imageUrl || ''}" class="text-xs text-white px-3 py-2 rounded-lg border border-white/20 w-full">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-center">
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Precio ($)</label>
-                            <input type="number" step="0.01" id="price-${idx}" value="${p.priceUSD}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Stock (0 = Agotado)</label>
-                            <input type="number" id="stock-${idx}" value="${p.stock}" class="text-sm font-bold text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Tallas (Separadas por coma)</label>
-                            <input type="text" id="sizes-${idx}" value="${p.sizes ? p.sizes.join(', ') : 'Única'}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full text-center">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Categoría</label>
-                            <select id="cat-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full">
-                                <option value="gorras" ${p.category==='gorras'?'selected':''}>Gorras</option>
-                                <option value="crocs" ${p.category==='crocs'?'selected':''}>Crocs</option>
-                                <option value="proximamente" ${p.category==='proximamente'?'selected':''}>Próximamente</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-zinc-400 mb-1">Subfiltro</label>
-                            <select id="sub-${idx}" class="text-xs text-white px-3 py-2 rounded-xl border border-white/20 w-full">
-                                <option value="exclusivas" ${p.subfilter==='exclusivas'?'selected':''}>Exclusiva</option>
-                                <option value="ofertas" ${p.subfilter==='ofertas'?'selected':''}>Oferta</option>
-                                <option value="todas" ${p.subfilter==='todas'?'selected':''}>Normal</option>
-                            </select>
-                        </div>
-                        <div class="flex justify-end pt-4">
-                            <button onclick="deleteProduct(${idx})" class="px-3 py-2 bg-zinc-900 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl border border-white/20 text-xs font-semibold w-full">🗑️ Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            
+            document.getElementById('toggle-gorras').checked = DATA.visibility.gorras !== false;
+            document.getElementById('toggle-crocs').checked = DATA.visibility.crocs !== false;
+            document.getElementById('toggle-proximamente').checked = DATA.visibility.proximamente !== false;
+            document.getElementById('whatsapp-number').value = DATA.config.whatsappNumber;
+            document.getElementById('whatsapp-message').value = DATA.config.whatsappMessage;
+            
+            renderAdminProducts();
             lucide.createIcons();
         }
 
-        async function saveAllToGitHub() {
-            PRODUCTS.forEach((p, idx) => {
-                p.name = document.getElementById(`name-${idx}`).value;
-                const urlVal = document.getElementById(`video-${idx}`).value;
-                p.videoUrl = urlVal;
-                p.imageUrl = urlVal;
-                p.priceUSD = parseFloat(document.getElementById(`price-${idx}`).value);
-                p.stock = parseInt(document.getElementById(`stock-${idx}`).value);
-                
-                const sizesInput = document.getElementById(`sizes-${idx}`).value;
-                p.sizes = sizesInput.split(',').map(s => s.trim()).filter(Boolean);
-
-                p.category = document.getElementById(`cat-${idx}`).value;
-                p.subfilter = document.getElementById(`sub-${idx}`).value;
-                
-                if (p.category === 'proximamente') {
-                    p.badge = "Próximamente";
-                    p.badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
-                } else if (p.stock === 0) {
-                    p.badge = "Agotado";
-                    p.badgeColor = "bg-zinc-800 text-zinc-400 border-white/10";
-                } else if (p.subfilter === 'exclusivas') {
-                    p.badge = "Exclusiva";
-                    p.badgeColor = "bg-white/10 text-white border-white/30";
-                } else {
-                    p.badge = "Disponible";
-                    p.badgeColor = "bg-white/10 text-white border-white/30";
-                }
-            });
-
-            CATEGORY_VISIBILITY = {
-                gorras: document.getElementById('toggle-gorras').checked,
-                crocs: document.getElementById('toggle-crocs').checked,
-                proximamente: document.getElementById('toggle-proximamente').checked
-            };
-
-            const payload = {
-                visibility: CATEGORY_VISIBILITY,
-                products: PRODUCTS
-            };
-
-            const btn = document.getElementById('save-btn');
-            btn.innerText = "Guardando en GitHub...";
-
-            try {
-                const jsonString = JSON.stringify(payload, null, 4);
-                const bytes = new TextEncoder().encode(jsonString);
-                const binaryString = Array.from(bytes, byte => String.fromCharCode(byte)).join('');
-                const contentEncoded = btoa(binaryString);
-
-                const putRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/products.json`, {
-                    method: 'PUT',
-                    headers: {
-                        "Authorization": `Bearer ${GITHUB_TOKEN}`,
-                        "Content-Type": "application/json",
-                        "Accept": "application/vnd.github.v3+json"
-                    },
-                    body: JSON.stringify({
-                        message: "Actualización completa de tienda y visibilidad",
-                        content: contentEncoded,
-                        sha: fileSha
-                    })
-                });
-
-                const resData = await putRes.json();
-
-                if (putRes.ok) {
-                    fileSha = resData.content.sha;
-                    alert('¡Cambios guardados con éxito en GitHub!');
-                } else {
-                    throw new Error(resData.message || 'Error al guardar');
-                }
-            } catch (err) {
-                alert('Error al guardar: ' + err.message);
-            }
-            btn.innerText = "Guardar Cambios Globales";
+        function updateVisibility() {
+            DATA.visibility.gorras = document.getElementById('toggle-gorras').checked;
+            DATA.visibility.crocs = document.getElementById('toggle-crocs').checked;
+            DATA.visibility.proximamente = document.getElementById('toggle-proximamente').checked;
         }
 
-        function addNewProduct() {
-            const newId = PRODUCTS.length > 0 ? Math.max(...PRODUCTS.map(p => p.id)) + 1 : 1;
-            PRODUCTS.push({
-                id: newId,
-                name: "Nuevo Artículo Próximo",
-                category: "proximamente",
-                subfilter: "todas",
-                priceUSD: 45.00,
-                badge: "Próximamente",
-                badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-cap-and-sunglasses-42171-large.mp4",
-                imageUrl: "https://placehold.co/600x600/18181b/ffffff?text=Nuevo",
-                description: "Próximamente disponible en Phantom Club.",
+        function saveConfig() {
+            DATA.config.whatsappNumber = document.getElementById('whatsapp-number').value.trim();
+            DATA.config.whatsappMessage = document.getElementById('whatsapp-message').value;
+            alert('¡Configuración de WhatsApp guardada! Recuerda descargar y subir tu products.json a GitHub.');
+        }
+
+        function renderAdminProducts() {
+            const container = document.getElementById('admin-products-list');
+            if (DATA.products.length === 0) {
+                container.innerHTML = `<p class="text-xs text-phantom-500 text-center py-6">No hay productos registrados.</p>`;
+                return;
+            }
+
+            container.innerHTML = DATA.products.map((p, idx) => `
+                <div class="bg-phantom-900/80 p-4 rounded-2xl border border-white/5 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input type="text" value="${p.name}" oninput="DATA.products[${idx}].name = this.value" placeholder="Nombre" class="bg-phantom-950 text-xs text-white p-2.5 rounded-xl border border-white/10">
+                        <input type="number" value="${p.priceUSD}" oninput="DATA.products[${idx}].priceUSD = parseFloat(this.value) || 0" placeholder="Precio USD" class="bg-phantom-950 text-xs text-white p-2.5 rounded-xl border border-white/10">
+                        <select onchange="DATA.products[${idx}].category = this.value" class="bg-phantom-950 text-xs text-white p-2.5 rounded-xl border border-white/10">
+                            <option value="gorras" ${p.category === 'gorras' ? 'selected' : ''}>Gorras</option>
+                            <option value="crocs" ${p.category === 'crocs' ? 'selected' : ''}>Crocs</option>
+                            <option value="proximamente" ${p.category === 'proximamente' ? 'selected' : ''}>Próximamente</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <input type="text" value="${p.videoUrl}" oninput="DATA.products[${idx}].videoUrl = this.value" placeholder="URL Video MP4" class="w-full bg-phantom-950 text-xs text-white p-2.5 rounded-xl border border-white/10 mr-3">
+                        <button onclick="deleteProduct(${idx})" class="px-3 py-2 bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addProduct() {
+            DATA.products.push({
+                id: Date.now(),
+                name: "Nuevo Producto",
+                category: "gorras",
+                subfilter: "exclusivas",
+                priceUSD: 25.0,
+                stock: 10,
                 sizes: ["Única"],
-                stock: 0,
-                specs: ["Edición especial"]
+                badge: "EXCLUSIVO",
+                badgeColor: "bg-white/10 text-white border-white/20",
+                description: "Descripción de prueba",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-stylish-man-with-caps-on-a-rack-41662-large.mp4"
             });
-            renderList();
+            renderAdminProducts();
         }
 
         function deleteProduct(idx) {
-            if(confirm('¿Eliminar este producto?')) {
-                PRODUCTS.splice(idx, 1);
-                renderList();
-            }
+            DATA.products.splice(idx, 1);
+            renderAdminProducts();
         }
+
+        function exportJSON() {
+            updateVisibility();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(DATA, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "products.json");
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAdminData);
     </script>
 </body>
 </html>
