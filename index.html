@@ -64,6 +64,26 @@
         
         .input-dark { background-color: rgba(9, 9, 11, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; transition: all 0.2s ease; }
         .input-dark:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; }
+
+        /* Cinta diagonal de agotado */
+        .sold-out-banner {
+            position: absolute;
+            top: 25px;
+            right: -35px;
+            transform: rotate(45deg);
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            padding: 6px 40px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-phantom-950 text-phantom-100 min-h-screen flex flex-col selection:bg-white selection:text-black">
@@ -99,9 +119,9 @@
                     <span id="header-bcv-rate" class="font-bold text-white tracking-wide">Cargando...</span>
                 </div>
 
-                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-phantom-900/80 border border-white/10 hover:border-white/30 text-white transition-all flex items-center gap-2 group hover:bg-phantom-800">
+                <!-- Botón de Carrito sin texto en móvil -->
+                <button onclick="toggleCart()" class="relative p-3 rounded-xl bg-phantom-900/80 border border-white/10 hover:border-white/30 text-white transition-all flex items-center justify-center group hover:bg-phantom-800">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-phantom-200 group-hover:scale-105 transition-transform"></i>
-                    <span class="hidden sm:inline text-xs font-semibold pr-1 text-phantom-200">Carrito</span>
                     <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-white text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-lg transition-transform scale-0">0</span>
                 </button>
             </div>
@@ -117,10 +137,10 @@
                     <button onclick="setCategory('todo')" class="cat-btn btn-active-style px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-md" data-category="todo">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i><span>Todo</span>
                     </button>
-                    <!-- Gorras (Nuevo Logo de Gorra Detallado y Profesional) -->
+                    <!-- Gorras (Nuevo Logo de Gorra Estilizado y Realista) -->
                     <button onclick="setCategory('gorras')" class="cat-btn btn-inactive-style px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2" data-category="gorras">
                         <svg class="w-5 h-5 solid-icon" viewBox="0 0 24 24">
-                            <path d="M12 3C7.5 3 4 5.5 4 8.5C4 9 4.1 9.5 4.3 10C5.5 9.5 8 9 12 9C16 9 18.5 9.5 19.7 10C19.9 9.5 20 9 20 8.5C20 5.5 16.5 3 12 3ZM3.2 12C2.8 13.5 3 15 4.5 16C5 18.5 8 20.5 12 20.5C16 20.5 19 18.5 19.5 16C21 15 21.2 13.5 20.8 12C18.5 12.8 15.5 13.2 12 13.2C8.5 13.2 5.5 12.8 3.2 12Z"/>
+                            <path d="M19 11C18.8 8.2 16.5 6.5 13.5 6C11 5.5 8 5.5 5.5 6C2.5 6.5 0.2 8.2 0 11C1.5 13 4 14 7 14.5C8 17 10.5 19 13.5 19C16.5 19 19 17 20 14.5C22.5 14 23.5 12.5 19 11ZM13.5 8C16 8 17.8 8.8 18.5 9.8C17.8 11.2 16 12 13.5 12C11 12 9.2 11.2 8.5 9.8C9.2 8.8 11 8 13.5 8ZM8.8 14C9.5 15.5 11.2 16.8 13.5 16.8C15.8 16.8 17.5 15.5 18.2 14H8.8Z" transform="translate(0.5, 1)"/>
                         </svg><span>Gorras</span>
                     </button>
                     <!-- Crocs -->
@@ -174,7 +194,6 @@
             
             <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
             
-            <!-- Módulo de Envios en Carrito -->
             <div id="cart-shipping-section" class="px-6 py-4 border-t border-white/10 bg-phantom-900/60 hidden space-y-3">
                 <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="truck" class="w-4 h-4"></i> Método de Entrega</h3>
                 
@@ -256,7 +275,7 @@
         let currentSubfilter = 'todas';
         let searchQuery = '';
         let cart = [];
-        let shippingMethod = 'delivery'; // 'delivery' o 'envio'
+        let shippingMethod = 'delivery';
 
         async function fetchBCVRate() {
             try {
@@ -415,6 +434,8 @@
             grid.innerHTML = filtered.map(p => {
                 const priceVES = (p.priceUSD * BCV_RATE).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 const isComingSoon = p.category === 'proximamente';
+                const isSoldOut = !isComingSoon && p.stock === 0;
+
                 return `
                     <div class="product-card group bg-phantom-900/60 rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between shadow-lg animate-fade-in backdrop-blur-md">
                         <div class="relative w-full h-64 overflow-hidden bg-black cursor-pointer" onclick="openModal(${p.id})">
@@ -422,6 +443,10 @@
                                 <source src="${p.videoUrl}" type="video/mp4">
                             </video>
                             <div class="absolute inset-0 bg-gradient-to-t from-phantom-950 via-transparent to-transparent opacity-80"></div>
+                            
+                            <!-- Cinta diagonal de Agotado -->
+                            ${isSoldOut ? '<div class="sold-out-banner">AGOTADO</div>' : ''}
+
                             <div class="absolute top-4 left-4">
                                 <span class="px-3 py-1 rounded-full text-[11px] font-bold border backdrop-blur-md shadow-md ${p.badgeColor}">${p.badge}</span>
                             </div>
@@ -461,6 +486,7 @@
             const modalBox = document.getElementById('product-modal');
             const contentBox = document.getElementById('modal-body-content');
             const isComingSoon = p.category === 'proximamente';
+            const isSoldOut = !isComingSoon && p.stock === 0;
 
             contentBox.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2">
@@ -469,6 +495,7 @@
                             <source src="${p.videoUrl}" type="video/mp4">
                         </video>
                         <div class="absolute inset-0 bg-gradient-to-t from-phantom-950 via-transparent to-transparent opacity-60"></div>
+                        ${isSoldOut ? '<div class="sold-out-banner">AGOTADO</div>' : ''}
                         <div class="absolute top-4 left-4 z-10"><span class="px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-md ${p.badgeColor}">${p.badge}</span></div>
                     </div>
                     
