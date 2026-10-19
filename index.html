@@ -43,29 +43,28 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #09090b; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
         .glass-panel {
-            background: rgba(18, 18, 21, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(18, 18, 21, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .glow-white {
-            box-shadow: 0 0 25px -5px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 30px -5px rgba(255, 255, 255, 0.15);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes smoothFade {
+            0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .animate-fade-in {
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: smoothFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .product-card {
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.25);
         }
     </style>
 </head>
@@ -73,7 +72,6 @@
 
     <header class="sticky top-0 z-50 glass-panel border-b border-white/10 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <!-- Brand Logo Espectral -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-white/20 to-phantom-900 border border-white/30 flex items-center justify-center group-hover:border-white transition-all duration-300 glow-white">
                     <svg class="w-5 h-5 text-white transform group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -89,19 +87,17 @@
                 </div>
             </a>
 
-            <!-- Header Search Bar -->
             <div class="hidden md:flex items-center relative flex-1 max-w-md mx-4">
                 <span class="absolute left-3.5 text-phantom-400 pointer-events-none">
                     <i data-lucide="search" class="w-4 h-4"></i>
                 </span>
                 <input type="text" id="desktop-search-input" placeholder="Buscar gorras, crocs, ropa..." 
-                    class="w-full bg-phantom-900/90 text-sm text-white placeholder-phantom-500 pl-10 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 transition-all shadow-inner">
+                    class="w-full bg-phantom-900/90 text-sm text-white placeholder-phantom-500 pl-10 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 transition-all shadow-inner">
                 <button id="desktop-search-clear" onclick="clearSearch()" class="hidden absolute right-3 text-phantom-400 hover:text-white transition-colors">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
 
-            <!-- BCV & Cart -->
             <div class="flex items-center gap-3 shrink-0">
                 <div class="hidden sm:flex items-center gap-2 bg-phantom-900/80 border border-white/10 px-3.5 py-2 rounded-xl text-xs backdrop-blur-md">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -128,11 +124,13 @@
                         <i data-lucide="layout-grid" class="w-4 h-4"></i>
                         <span>Todo</span>
                     </button>
+                    <!-- Botón Gorras con Logo Vectorial Negro/Minimalista -->
                     <button onclick="setCategory('gorras')" class="cat-btn px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-phantom-800/80 text-phantom-300 hover:text-white hover:bg-phantom-700 border border-white/5 hover:scale-[1.02]" data-category="gorras">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M2 12c0-3.5 2-6 6-6h8c4 0 6 2.5 6 6H2z"/>
-                            <path d="M4 12v2a6 6 0 0012 0v-2"/>
-                            <path d="M14 6L18 3"/>
+                        <svg class="w-5 h-5 text-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12c0-3 2-5 6-5h8c4 0 6 2 6 5"></path>
+                            <path d="M4 12v1a7 7 0 0 0 14 0v-1"></path>
+                            <path d="M13 7L16 3"></path>
+                            <path d="M18.5 13c1.5 0 3.5 1 3.5 2.5s-1.5 2.5-3.5 2.5"></path>
                         </svg>
                         <span>Gorras</span>
                     </button>
@@ -157,7 +155,7 @@
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </span>
                     <input type="text" id="main-search-input" oninput="handleSearch(this.value)" placeholder="Buscar en catálogo..." 
-                        class="w-full bg-phantom-950 text-sm text-white placeholder-phantom-500 pl-10 pr-10 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/40 transition-all shadow-inner">
+                        class="w-full bg-phantom-950 text-sm text-white placeholder-phantom-500 pl-10 pr-10 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-white/40 transition-all shadow-inner">
                     <button id="main-search-clear" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 flex items-center pr-3.5 text-phantom-400 hover:text-white transition-colors">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
@@ -166,6 +164,7 @@
             </div>
         </section>
 
+        <!-- Subfiltros (Sin opción de agotadas) -->
         <section id="subfilters-container" class="mb-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"></section>
 
         <section class="mb-16">
@@ -276,11 +275,15 @@
             try {
                 const response = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
                 const data = await response.json();
-                if (data && data.promedio) BCV_RATE = parseFloat(data.promedio);
+                if (data && data.promedio) {
+                    BCV_RATE = parseFloat(data.promedio);
+                }
             } catch (error) {
                 console.log('Usando tasa de respaldo local:', error);
             }
             document.getElementById('header-bcv-rate').innerText = `Bs. ${BCV_RATE.toFixed(2)}`;
+            const cartBcvEl = document.getElementById('cart-bcv-rate');
+            if (cartBcvEl) cartBcvEl.innerText = `Bs. ${BCV_RATE.toFixed(2)}`;
             renderProducts();
             updateCartUI();
         }
@@ -301,6 +304,8 @@
             lucide.createIcons();
             loadProducts();
             fetchBCVRate();
+            // Actualización automática cada 15 minutos para mantener el BCV sincronizado
+            setInterval(fetchBCVRate, 15 * 60 * 1000);
             updateCartUI();
 
             document.getElementById('desktop-search-input').addEventListener('input', (e) => handleSearch(e.target.value));
@@ -328,8 +333,7 @@
                 filters = [
                     { id: 'todas', label: 'Todas' },
                     { id: 'exclusivas', label: '⭐ Exclusivas' },
-                    { id: 'ofertas', label: '🔥 Ofertas' },
-                    { id: 'agotados', label: '❌ Agotados' }
+                    { id: 'ofertas', label: '🔥 Ofertas' }
                 ];
             } else if (currentCategory === 'proximamente') {
                 filters = [{ id: 'proximamente', label: '🚀 Próximos Lanzamientos' }];
@@ -374,7 +378,6 @@
                 let matchSub = true;
                 if (currentSubfilter !== 'todas') {
                     if (currentSubfilter === 'proximamente') matchSub = p.category === 'proximamente';
-                    else if (currentSubfilter === 'agotados') matchSub = p.stock === 0 || p.subfilter === 'agotados';
                     else matchSub = p.subfilter === currentSubfilter;
                 }
                 let matchSearch = searchQuery === '' || p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
@@ -390,6 +393,7 @@
             emptyState.classList.add('hidden');
             grid.innerHTML = filtered.map(p => {
                 const priceVES = (p.priceUSD * BCV_RATE).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const isComingSoon = p.category === 'proximamente';
                 return `
                     <div class="product-card group bg-phantom-900/60 rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 flex flex-col justify-between shadow-xl animate-fade-in backdrop-blur-md">
                         <div class="relative w-full h-64 overflow-hidden bg-black cursor-pointer" onclick="openModal(${p.id})">
@@ -401,7 +405,7 @@
                                 <span class="px-3 py-1 rounded-full text-[11px] font-bold border backdrop-blur-md shadow-md ${p.badgeColor}">${p.badge}</span>
                             </div>
                             <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg text-[11px] font-semibold text-phantom-300 border border-white/10">
-                                ${p.stock > 0 ? `${p.stock} disp.` : 'Agotado'}
+                                ${isComingSoon ? 'Pronto' : (p.stock > 0 ? `${p.stock} disp.` : 'Agotado')}
                             </div>
                         </div>
 
@@ -418,8 +422,8 @@
                                     <div class="text-xs text-phantom-400 font-medium mt-1">Bs. ${priceVES}</div>
                                 </div>
                                 <button onclick="openModal(${p.id})" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-xs font-bold transition-all duration-300 flex items-center gap-1.5 border border-white/15 hover:scale-105 shadow-md">
-                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                    <span>Ver Detalle</span>
+                                    <i data-lucide="${isComingSoon ? 'bell' : 'eye'}" class="w-3.5 h-3.5"></i>
+                                    <span>${isComingSoon ? 'Preordenar' : 'Ver Detalle'}</span>
                                 </button>
                             </div>
                         </div>
@@ -435,6 +439,7 @@
             const priceVES = (p.priceUSD * BCV_RATE).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const modalBox = document.getElementById('product-modal');
             const contentBox = document.getElementById('modal-body-content');
+            const isComingSoon = p.category === 'proximamente';
 
             contentBox.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2">
@@ -470,13 +475,22 @@
                                     <div class="text-3xl font-black text-white leading-none">$${p.priceUSD.toFixed(2)}</div>
                                     <div class="text-xs text-phantom-400 font-medium mt-1">Bs. ${priceVES} (Tasa BCV)</div>
                                 </div>
-                                <span class="text-xs font-semibold ${p.stock > 0 ? 'text-emerald-400' : 'text-rose-400'}">${p.stock > 0 ? `Stock: ${p.stock} disp.` : 'Agotado'}</span>
+                                <span class="text-xs font-semibold ${isComingSoon ? 'text-amber-400' : (p.stock > 0 ? 'text-emerald-400' : 'text-rose-400')}">
+                                    ${isComingSoon ? 'Preventa Exclusiva' : (p.stock > 0 ? `Stock: ${p.stock} disp.` : 'Agotado')}
+                                </span>
                             </div>
 
-                            <button onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''} class="w-full py-4 rounded-xl ${p.stock > 0 ? 'bg-white hover:bg-phantom-200 text-black font-extrabold shadow-xl cursor-pointer hover:scale-[1.02]' : 'bg-phantom-800 text-phantom-500 cursor-not-allowed border border-white/5'} transition-all flex items-center justify-center gap-2">
-                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                                <span>${p.stock > 0 ? 'Agregar al Carrito' : 'Agotado Temporalmente'}</span>
-                            </button>
+                            ${isComingSoon ? `
+                                <button onclick="preorderWhatsApp('${p.name}')" class="w-full py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold shadow-xl cursor-pointer hover:scale-[1.02] transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="bell" class="w-4 h-4"></i>
+                                    <span>Preordenar / Reservar por WhatsApp</span>
+                                </button>
+                            ` : `
+                                <button onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled' : ''} class="w-full py-4 rounded-xl ${p.stock > 0 ? 'bg-white hover:bg-phantom-200 text-black font-extrabold shadow-xl cursor-pointer hover:scale-[1.02]' : 'bg-phantom-800 text-phantom-500 cursor-not-allowed border border-white/5'} transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                                    <span>${p.stock > 0 ? 'Agregar al Carrito' : 'Agotado Temporalmente'}</span>
+                                </button>
+                            `}
                         </div>
                     </div>
                 </div>
@@ -523,6 +537,11 @@
             toggleCart();
         }
 
+        function preorderWhatsApp(productName) {
+            let message = `¡Hola! Phantom Club Store 🦇⚡\nMe interesa realizar una PREORDEN / RESERVA para el producto próximo:\n\n*${productName}*\n\n¿Me podrían dar más detalles de disponibilidad y fecha de llegada?`;
+            window.open(`https://wa.me/584128705612?text=` + encodeURIComponent(message), '_blank');
+        }
+
         function updateQuantity(index, delta) {
             cart[index].quantity += delta;
             if (cart[index].quantity <= 0) cart.splice(index, 1);
@@ -551,7 +570,6 @@
             let totalUSD = 0;
             container.innerHTML = cart.map((item, idx) => {
                 const itemTotalUSD = item.priceUSD * item.quantity;
-                const itemTotalVES = itemTotalUSD * BCV_RATE;
                 totalUSD += itemTotalUSD;
                 return `
                     <div class="flex items-center gap-4 bg-phantom-900/60 p-3.5 rounded-2xl border border-white/10">
@@ -578,7 +596,7 @@
             if (cart.length === 0) return;
             let totalUSD = cart.reduce((sum, item) => sum + (item.priceUSD * item.quantity), 0);
             let message = "¡Hola! Phantom Club Store 🦇⚡\nMe gustaría confirmar mi pedido:\n\n";
-            cart.forEach((item, i) => { message += `${i+1}. ${item.name} (Talla: ${item.size}) x${item.quantity}\n`; });
+            cart.formatItems = cart.forEach((item, i) => { message += `${i+1}. ${item.name} (Talla: ${item.size}) x${item.quantity}\n`; });
             message += `\n*Total:* $${totalUSD.toFixed(2)} (Bs. ${(totalUSD * BCV_RATE).toFixed(2)})`;
             window.open(`https://wa.me/584128705612?text=` + encodeURIComponent(message), '_blank');
         }
