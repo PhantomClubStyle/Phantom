@@ -14,8 +14,8 @@
       "id": 1,
       "name": "Gorra Gallo pinto",
       "category": "gorras",
-      "subfilter": "exclusivas",
-      "priceUSD": 35,
+      "subfilter": "todas",
+      "priceUSD": 38.19,
       "badge": "Agotado",
       "badgeColor": "bg-zinc-800 text-zinc-400 border-white/10",
       "videoUrl": "VID-20260806-WA0042.mp4",
@@ -30,7 +30,7 @@
         "Bordado de alta densidad",
         "Edición numerada 1/100"
       ],
-      "oldPriceUSD": 50
+      "oldPriceUSD": 46.01
     },
     {
       "id": 2,
